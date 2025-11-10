@@ -60,8 +60,7 @@ impl HistoryService for HistoryServiceImpl {
         include_reminders: bool,
     ) -> DexApiResult<ContactHistoryResponse> {
         // Validate contact ID
-        Self::validate_contact_id(contact_id)
-            .map_err(crate::error::DexApiError::InvalidRequest)?;
+        Self::validate_contact_id(contact_id).map_err(crate::error::DexApiError::InvalidRequest)?;
 
         let filter = HistoryFilterParams {
             start_date: date_from,
