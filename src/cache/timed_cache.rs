@@ -19,6 +19,15 @@ struct CacheEntry<V> {
 ///
 /// Entries are automatically expired after the configured TTL (Time To Live) duration.
 /// The cache is thread-safe and can be cloned cheaply (uses Arc internally).
+///
+/// # Memory Efficiency with Arc
+///
+/// For large values, consider wrapping them in `Arc` to avoid cloning:
+/// ```ignore
+/// let cache = TimedCache::<String, Arc<LargeStruct>>::new(60);
+/// cache.insert("key".to_string(), Arc::new(large_value));
+/// let value: Option<Arc<LargeStruct>> = cache.get(&"key".to_string());
+/// ```
 #[derive(Clone)]
 pub struct TimedCache<K, V>
 where
