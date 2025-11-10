@@ -156,6 +156,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[ignore]
     fn test_config_loads_from_env() {
         // This test will panic if .env is not configured properly
         let config = TestConfig::from_env();
@@ -164,6 +165,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_setup_client() {
         let _client = setup_test_client();
         // Just verify we can create a client

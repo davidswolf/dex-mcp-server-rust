@@ -15,6 +15,7 @@ use e2e::*;
 /// - Timeline items are in chronological order
 /// - All interaction types are included
 #[test]
+#[ignore]
 #[serial]
 fn test_get_contact_timeline() {
     let client = setup_test_client();
@@ -78,6 +79,7 @@ fn test_get_contact_timeline() {
 /// - Items are sorted by timestamp
 /// - Chronological ordering is maintained
 #[test]
+#[ignore]
 #[serial]
 fn test_combined_history_view() {
     let client = setup_test_client();
@@ -166,6 +168,7 @@ fn test_combined_history_view() {
 /// - Timeline can be filtered by item type
 /// - Filtering returns correct item types
 #[test]
+#[ignore]
 #[serial]
 fn test_timeline_filtering_by_type() {
     let client = setup_test_client();
@@ -219,6 +222,7 @@ fn test_timeline_filtering_by_type() {
 /// - Completed reminders can be filtered
 /// - Status filtering works correctly
 #[test]
+#[ignore]
 #[serial]
 fn test_filter_active_vs_completed_reminders() {
     let client = setup_test_client();
@@ -290,6 +294,7 @@ fn test_filter_active_vs_completed_reminders() {
 /// - Empty timelines return gracefully
 /// - No errors for contacts with no history
 #[test]
+#[ignore]
 #[serial]
 fn test_empty_timeline() {
     let client = setup_test_client();
@@ -354,6 +359,7 @@ fn test_empty_timeline() {
 /// - Timeline items can be filtered by date
 /// - Timestamp parsing works correctly
 #[test]
+#[ignore]
 #[serial]
 fn test_timeline_date_filtering() {
     let client = setup_test_client();
@@ -421,6 +427,7 @@ fn test_timeline_date_filtering() {
 /// - Timeline items can be sorted by timestamp
 /// - Sorting order is correct (newest first or oldest first)
 #[test]
+#[ignore]
 #[serial]
 fn test_timeline_chronological_sorting() {
     let client = setup_test_client();
@@ -486,6 +493,7 @@ fn test_timeline_chronological_sorting() {
 /// - Total interaction count can be calculated
 /// - Different interaction types can be counted
 #[test]
+#[ignore]
 #[serial]
 fn test_interaction_metrics() {
     let client = setup_test_client();

@@ -16,6 +16,7 @@ use e2e::*;
 /// - Exact matches return high confidence
 /// - Contact details are properly returned
 #[test]
+#[ignore]
 #[serial]
 fn test_find_contact_by_name() {
     let client = setup_test_client();
@@ -61,6 +62,7 @@ fn test_find_contact_by_name() {
 /// - Search returns high confidence for exact email matches
 /// - Multiple contacts with same email domain can be distinguished
 #[test]
+#[ignore]
 #[serial]
 fn test_find_contact_by_email() {
     let client = setup_test_client();
@@ -117,6 +119,7 @@ fn test_find_contact_by_email() {
 /// - Social profile fields are populated
 /// - Matching is case-insensitive for URLs
 #[test]
+#[ignore]
 #[serial]
 fn test_find_contact_by_linkedin() {
     let client = setup_test_client();
@@ -176,6 +179,7 @@ fn test_find_contact_by_linkedin() {
 /// - Results are ranked appropriately
 /// - No false negatives for valid partial matches
 #[test]
+#[ignore]
 #[serial]
 fn test_find_contact_partial_name() {
     let client = setup_test_client();
@@ -238,6 +242,7 @@ fn test_find_contact_partial_name() {
 /// - Empty or low-confidence results are returned
 /// - Error handling is graceful
 #[test]
+#[ignore]
 #[serial]
 fn test_find_contact_no_match() {
     let client = setup_test_client();
@@ -290,6 +295,7 @@ fn test_find_contact_no_match() {
 /// - No duplicate contacts across pages
 /// - Data consistency is maintained
 #[test]
+#[ignore]
 #[serial]
 fn test_list_all_contacts_discovery() {
     let client = setup_test_client();
@@ -364,6 +370,7 @@ fn test_list_all_contacts_discovery() {
 /// - Name search is case-insensitive
 /// - Different case variations return same results
 #[test]
+#[ignore]
 #[serial]
 fn test_case_insensitive_search() {
     let client = setup_test_client();

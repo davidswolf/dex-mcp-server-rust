@@ -141,10 +141,12 @@ fn test_create_contact() {
         .with_header("content-type", "application/json")
         .with_body(
             r#"{
-            "id": "new-contact",
-            "first_name": "New",
-            "last_name": "User",
-            "emails": [{"email": "new@example.com"}]
+            "insert_contacts_one": {
+                "id": "new-contact",
+                "first_name": "New",
+                "last_name": "User",
+                "emails": [{"email": "new@example.com"}]
+            }
         }"#,
         )
         .create();
@@ -170,10 +172,12 @@ fn test_update_contact() {
         .with_status(200)
         .with_body(
             r#"{
-            "id": "contact123",
-            "first_name": "Updated",
-            "last_name": "User",
-            "emails": [{"email": "updated@example.com"}]
+            "update_contacts_by_pk": {
+                "id": "contact123",
+                "first_name": "Updated",
+                "last_name": "User",
+                "emails": [{"email": "updated@example.com"}]
+            }
         }"#,
         )
         .create();
@@ -273,14 +277,16 @@ fn test_create_note() {
     let mut server = Server::new();
 
     let mock = server
-        .mock("POST", "/notes")
+        .mock("POST", "/timeline_items")
         .with_status(201)
         .with_body(
             r#"{
-            "id": "new-note",
-            "contacts": [{"contact_id": "contact123"}],
-            "note": "New note content",
-            "event_time": "2024-01-15T10:00:00Z"
+            "insert_timeline_items_one": {
+                "id": "new-note",
+                "contacts": [{"contact_id": "contact123"}],
+                "note": "New note content",
+                "event_time": "2024-01-15T10:00:00Z"
+            }
         }"#,
         )
         .create();
@@ -350,11 +356,13 @@ fn test_create_reminder() {
         .with_status(201)
         .with_body(
             r#"{
-            "id": "new-reminder",
-            "contact_ids": [{"contact_id": "contact123"}],
-            "body": "New reminder",
-            "due_at_date": "2024-03-01",
-            "is_complete": false
+            "insert_reminders_one": {
+                "id": "new-reminder",
+                "contact_ids": [{"contact_id": "contact123"}],
+                "body": "New reminder",
+                "due_at_date": "2024-03-01",
+                "is_complete": false
+            }
         }"#,
         )
         .create();

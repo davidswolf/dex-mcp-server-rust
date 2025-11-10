@@ -83,8 +83,7 @@ impl NoteService for NoteServiceImpl {
         limit: Option<usize>,
     ) -> DexApiResult<Vec<Note>> {
         // Validate contact ID
-        Self::validate_contact_id(contact_id)
-            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
+        Self::validate_contact_id(contact_id).map_err(crate::error::DexApiError::InvalidRequest)?;
 
         let filter = HistoryFilterParams {
             start_date: date_from,
@@ -106,11 +105,10 @@ impl NoteService for NoteServiceImpl {
     ) -> DexApiResult<Note> {
         // Validate contact ID
         Self::validate_contact_id(&contact_id)
-            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
+            .map_err(crate::error::DexApiError::InvalidRequest)?;
 
         // Validate note content
-        Self::validate_note_content(&content)
-            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
+        Self::validate_note_content(&content).map_err(crate::error::DexApiError::InvalidRequest)?;
 
         let note_params = CreateNoteParams {
             contact_id,

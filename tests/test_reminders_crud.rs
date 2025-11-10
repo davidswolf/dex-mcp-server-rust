@@ -54,6 +54,7 @@ impl<'a> Drop for ReminderGuard<'a> {
 /// - Reminders can be deleted
 /// - All test data is cleaned up
 #[test]
+#[ignore]
 #[serial]
 fn test_reminder_crud_lifecycle() {
     let client = setup_test_client();
@@ -212,6 +213,7 @@ fn test_reminder_crud_lifecycle() {
 /// - Reminders can be marked as complete
 /// - Completed reminders can be updated
 #[test]
+#[ignore]
 #[serial]
 fn test_reminder_completion_workflow() {
     let client = setup_test_client();
@@ -289,6 +291,7 @@ fn test_reminder_completion_workflow() {
 /// - Multiple reminders can be created for the same contact
 /// - All reminders are properly cleaned up
 #[test]
+#[ignore]
 #[serial]
 fn test_reminder_batch_create_and_cleanup() {
     let client = setup_test_client();
@@ -344,6 +347,7 @@ fn test_reminder_batch_create_and_cleanup() {
 /// - Reminder due dates can be updated
 /// - Date format is handled correctly
 #[test]
+#[ignore]
 #[serial]
 fn test_reminder_update_due_date() {
     let client = setup_test_client();
@@ -409,6 +413,7 @@ fn test_reminder_update_due_date() {
 /// This test validates:
 /// - Appropriate error is returned for invalid reminder IDs
 #[test]
+#[ignore]
 #[serial]
 fn test_reminder_update_nonexistent() {
     let client = setup_test_client();
@@ -446,6 +451,7 @@ fn test_reminder_update_nonexistent() {
 /// This test validates:
 /// - Appropriate error is returned for invalid reminder IDs
 #[test]
+#[ignore]
 #[serial]
 fn test_reminder_delete_nonexistent() {
     let client = setup_test_client();
@@ -470,6 +476,7 @@ fn test_reminder_delete_nonexistent() {
 /// - Reminders can be created with past due dates
 /// - Such reminders are considered overdue
 #[test]
+#[ignore]
 #[serial]
 fn test_reminder_with_past_due_date() {
     let client = setup_test_client();

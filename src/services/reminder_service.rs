@@ -118,8 +118,7 @@ impl ReminderService for ReminderServiceImpl {
         status: Option<ReminderStatus>,
     ) -> DexApiResult<Vec<Reminder>> {
         // Validate contact ID
-        Self::validate_contact_id(contact_id)
-            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
+        Self::validate_contact_id(contact_id).map_err(crate::error::DexApiError::InvalidRequest)?;
 
         let filter = HistoryFilterParams {
             start_date: date_from,
@@ -162,15 +161,13 @@ impl ReminderService for ReminderServiceImpl {
     ) -> DexApiResult<Reminder> {
         // Validate contact ID
         Self::validate_contact_id(&contact_id)
-            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
+            .map_err(crate::error::DexApiError::InvalidRequest)?;
 
         // Validate reminder text
-        Self::validate_reminder_text(&text)
-            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
+        Self::validate_reminder_text(&text).map_err(crate::error::DexApiError::InvalidRequest)?;
 
         // Validate due date format
-        Self::validate_date_format(&due_date)
-            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
+        Self::validate_date_format(&due_date).map_err(crate::error::DexApiError::InvalidRequest)?;
 
         let reminder_params = CreateReminderParams {
             contact_id,

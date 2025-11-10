@@ -16,6 +16,7 @@ use e2e::*;
 /// - Case-insensitive matching works
 /// - Top result is correct for exact matches
 #[test]
+#[ignore]
 #[serial]
 fn test_exact_name_match() {
     let client = setup_test_client();
@@ -68,6 +69,7 @@ fn test_exact_name_match() {
 /// - Results are ranked by relevance
 /// - Confidence scores are appropriate for partial matches
 #[test]
+#[ignore]
 #[serial]
 fn test_partial_name_match() {
     let client = setup_test_client();
@@ -139,6 +141,7 @@ fn test_partial_name_match() {
 /// - Confidence is reduced for typos but still acceptable
 /// - Levenshtein distance algorithm works correctly
 #[test]
+#[ignore]
 #[serial]
 fn test_typo_tolerance() {
     let client = setup_test_client();
@@ -218,6 +221,7 @@ fn test_typo_tolerance() {
 /// - Uppercase, lowercase, and mixed case searches work identically
 /// - Normalization handles different case variations
 #[test]
+#[ignore]
 #[serial]
 fn test_case_insensitivity() {
     let client = setup_test_client();
@@ -280,6 +284,7 @@ fn test_case_insensitivity() {
 /// - Common name variations can be matched
 /// - Confidence scores reflect similarity
 #[test]
+#[ignore]
 #[serial]
 fn test_name_variations() {
     let client = setup_test_client();
@@ -333,6 +338,7 @@ fn test_name_variations() {
 /// - Full name searches are more accurate than partial
 /// - Confidence scoring reflects completeness
 #[test]
+#[ignore]
 #[serial]
 fn test_full_name_vs_parts() {
     let client = setup_test_client();
@@ -414,6 +420,7 @@ fn test_full_name_vs_parts() {
 /// - Confidence scores are calibrated appropriately
 /// - No results below threshold are returned
 #[test]
+#[ignore]
 #[serial]
 fn test_confidence_threshold() {
     let client = setup_test_client();
@@ -470,6 +477,7 @@ fn test_confidence_threshold() {
 /// - Email matches are treated as exact (confidence 100)
 /// - Email matching is prioritized over name matching
 #[test]
+#[ignore]
 #[serial]
 fn test_exact_email_confidence() {
     let client = setup_test_client();
@@ -517,6 +525,7 @@ fn test_exact_email_confidence() {
 /// - Results are limited to max_results parameter
 /// - Top results are returned (by confidence)
 #[test]
+#[ignore]
 #[serial]
 fn test_max_results_limit() {
     let client = setup_test_client();
