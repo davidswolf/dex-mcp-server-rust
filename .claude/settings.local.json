@@ -48,7 +48,10 @@
       "Bash(Select-String -Pattern \"test result|✓|✗|FAILED|passed\")",
       "Bash(Select-String -Pattern \"error|warning\" -Context 1)",
       "Bash(Select-String -Pattern \"warning\")",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(gh:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
