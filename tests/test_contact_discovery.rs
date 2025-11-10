@@ -83,9 +83,14 @@ fn test_find_contact_by_email() {
             Ok(search_results) => {
                 if !search_results.is_empty() {
                     // Verify at least one result has the matching email
-                    let has_match = search_results.iter().any(|c| c.email.as_ref() == Some(email));
+                    let has_match = search_results
+                        .iter()
+                        .any(|c| c.email.as_ref() == Some(email));
                     assert!(has_match, "Search results should contain the exact email");
-                    println!("✓ Email search successful: found {} result(s)", search_results.len());
+                    println!(
+                        "✓ Email search successful: found {} result(s)",
+                        search_results.len()
+                    );
                 } else {
                     println!("⚠ Email search returned no results");
                 }
@@ -127,18 +132,20 @@ fn test_find_contact_by_linkedin() {
     // Find a contact with LinkedIn profile
     let contact_with_linkedin = contacts.iter().find(|c| {
         c.social_profiles.iter().any(|p| {
-            p.profile_type.to_lowercase().contains("linkedin") ||
-            p.url.to_lowercase().contains("linkedin")
+            p.profile_type.to_lowercase().contains("linkedin")
+                || p.url.to_lowercase().contains("linkedin")
         })
     });
 
     if let Some(contact) = contact_with_linkedin {
         println!("Found contact with LinkedIn: {}", contact.name);
 
-        let linkedin_profile = contact.social_profiles.iter()
+        let linkedin_profile = contact
+            .social_profiles
+            .iter()
             .find(|p| {
-                p.profile_type.to_lowercase().contains("linkedin") ||
-                p.url.to_lowercase().contains("linkedin")
+                p.profile_type.to_lowercase().contains("linkedin")
+                    || p.url.to_lowercase().contains("linkedin")
             })
             .unwrap();
 
@@ -148,10 +155,13 @@ fn test_find_contact_by_linkedin() {
         // Verify we can retrieve the contact by ID and LinkedIn is preserved
         let by_id = client.get_contact(&contact.id).unwrap();
         let has_linkedin = by_id.social_profiles.iter().any(|p| {
-            p.profile_type.to_lowercase().contains("linkedin") ||
-            p.url.to_lowercase().contains("linkedin")
+            p.profile_type.to_lowercase().contains("linkedin")
+                || p.url.to_lowercase().contains("linkedin")
         });
-        assert!(has_linkedin, "LinkedIn profile should be preserved when fetching by ID");
+        assert!(
+            has_linkedin,
+            "LinkedIn profile should be preserved when fetching by ID"
+        );
 
         println!("✓ LinkedIn profile preserved in contact retrieval");
     } else {
@@ -190,11 +200,16 @@ fn test_find_contact_partial_name() {
     println!("Searching for partial name: {}", first_name);
 
     // Search for all contacts matching the first name
-    let matching_contacts: Vec<_> = contacts.iter()
+    let matching_contacts: Vec<_> = contacts
+        .iter()
         .filter(|c| c.name.to_lowercase().contains(&first_name.to_lowercase()))
         .collect();
 
-    println!("Found {} contacts matching '{}'", matching_contacts.len(), first_name);
+    println!(
+        "Found {} contacts matching '{}'",
+        matching_contacts.len(),
+        first_name
+    );
 
     if matching_contacts.len() > 1 {
         println!("✓ Partial name search returns multiple candidates:");
@@ -202,12 +217,18 @@ fn test_find_contact_partial_name() {
             println!("  {}. {}", i + 1, contact.name);
         }
     } else if matching_contacts.len() == 1 {
-        println!("✓ Partial name search returns single match: {}", matching_contacts[0].name);
+        println!(
+            "✓ Partial name search returns single match: {}",
+            matching_contacts[0].name
+        );
     }
 
     // Verify the original contact is in the results
     let original_found = matching_contacts.iter().any(|c| &c.name == full_name);
-    assert!(original_found, "Original contact should be in partial name search results");
+    assert!(
+        original_found,
+        "Original contact should be in partial name search results"
+    );
 }
 
 /// Test searching for a non-existent contact.
@@ -233,11 +254,15 @@ fn test_find_contact_no_match() {
     let contacts = result.unwrap();
 
     // Search for the non-existent name
-    let matches: Vec<_> = contacts.iter()
+    let matches: Vec<_> = contacts
+        .iter()
         .filter(|c| c.name.contains(non_existent_name))
         .collect();
 
-    assert!(matches.is_empty(), "Should not find matches for non-existent name");
+    assert!(
+        matches.is_empty(),
+        "Should not find matches for non-existent name"
+    );
     println!("✓ Non-existent name returns no matches (as expected)");
 
     // Test with non-existent email
@@ -245,7 +270,10 @@ fn test_find_contact_no_match() {
 
     match result {
         Ok(results) => {
-            assert!(results.is_empty(), "Should not find contacts for non-existent email");
+            assert!(
+                results.is_empty(),
+                "Should not find contacts for non-existent email"
+            );
             println!("✓ Non-existent email returns empty results (as expected)");
         }
         Err(e) => {
@@ -271,7 +299,10 @@ fn test_list_all_contacts_discovery() {
     let mut offset = 0;
     let mut page_num = 1;
 
-    println!("Fetching all contacts with pagination (page size: {})...", page_size);
+    println!(
+        "Fetching all contacts with pagination (page size: {})...",
+        page_size
+    );
 
     loop {
         let result = client.get_contacts(page_size, offset);
@@ -314,7 +345,10 @@ fn test_list_all_contacts_discovery() {
         }
 
         assert_eq!(duplicates, 0, "Found {} duplicate contact IDs", duplicates);
-        println!("✓ No duplicate contacts found across {} pages", page_num - 1);
+        println!(
+            "✓ No duplicate contacts found across {} pages",
+            page_num - 1
+        );
 
         // Validate a sample of contacts
         for contact in all_contacts.iter().take(10) {
@@ -356,17 +390,25 @@ fn test_case_insensitive_search() {
     let lower = name.to_lowercase();
     let upper = name.to_uppercase();
 
-    let lower_matches: Vec<_> = contacts.iter()
+    let lower_matches: Vec<_> = contacts
+        .iter()
         .filter(|c| c.name.to_lowercase().contains(&lower))
         .collect();
 
-    let upper_matches: Vec<_> = contacts.iter()
+    let upper_matches: Vec<_> = contacts
+        .iter()
         .filter(|c| c.name.to_uppercase().contains(&upper))
         .collect();
 
     // Both should find the contact
-    assert!(!lower_matches.is_empty(), "Lowercase search should find contact");
-    assert!(!upper_matches.is_empty(), "Uppercase search should find contact");
+    assert!(
+        !lower_matches.is_empty(),
+        "Lowercase search should find contact"
+    );
+    assert!(
+        !upper_matches.is_empty(),
+        "Uppercase search should find contact"
+    );
 
     println!("✓ Case-insensitive search working correctly");
     println!("  Lowercase matches: {}", lower_matches.len());

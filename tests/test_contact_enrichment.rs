@@ -35,7 +35,10 @@ fn test_add_note_to_contact() {
     let contact = &contacts[0];
     let note_content = generate_test_note_content("E2E Test Note");
 
-    println!("Adding note to contact: {} (ID: {})", contact.name, contact.id);
+    println!(
+        "Adding note to contact: {} (ID: {})",
+        contact.name, contact.id
+    );
     println!("Note content: {}", note_content);
 
     let note = sample_note(&contact.id, &note_content);
@@ -80,7 +83,10 @@ fn test_retrieve_notes_for_contact() {
     }
 
     let contact = &contacts[0];
-    println!("Fetching notes for contact: {} (ID: {})", contact.name, contact.id);
+    println!(
+        "Fetching notes for contact: {} (ID: {})",
+        contact.name, contact.id
+    );
 
     let result = client.get_contact_notes(&contact.id, 50, 0);
 
@@ -91,8 +97,10 @@ fn test_retrieve_notes_for_contact() {
             if !notes.is_empty() {
                 // Validate first note
                 assert_note_valid(&notes[0]);
-                println!("  First note preview: {}",
-                    notes[0].content.chars().take(50).collect::<String>());
+                println!(
+                    "  First note preview: {}",
+                    notes[0].content.chars().take(50).collect::<String>()
+                );
             }
         }
         Err(e) => {
@@ -125,7 +133,10 @@ fn test_add_multiple_notes() {
     }
 
     let contact = &contacts[0];
-    println!("Adding multiple notes to: {} (ID: {})", contact.name, contact.id);
+    println!(
+        "Adding multiple notes to: {} (ID: {})",
+        contact.name, contact.id
+    );
 
     // Get initial note count
     let initial_notes = client.get_contact_notes(&contact.id, 100, 0);
@@ -202,18 +213,12 @@ fn test_note_with_special_characters() {
     match result {
         Ok(created) => {
             println!("✓ Note created with special characters");
-            assert!(
-                created.content.contains("🎉"),
-                "Emoji should be preserved"
-            );
+            assert!(created.content.contains("🎉"), "Emoji should be preserved");
             assert!(
                 created.content.contains("\n"),
                 "Newlines should be preserved"
             );
-            assert!(
-                created.content.contains("\""),
-                "Quotes should be preserved"
-            );
+            assert!(created.content.contains("\""), "Quotes should be preserved");
             println!("  ✓ Special characters preserved");
         }
         Err(e) => {
@@ -248,7 +253,10 @@ fn test_create_reminder() {
     let contact = &contacts[0];
     let reminder_text = generate_test_reminder_text("E2E Test Reminder");
 
-    println!("Creating reminder for: {} (ID: {})", contact.name, contact.id);
+    println!(
+        "Creating reminder for: {} (ID: {})",
+        contact.name, contact.id
+    );
     println!("Reminder text: {}", reminder_text);
 
     let reminder = sample_reminder(&contact.id, &reminder_text);
@@ -294,7 +302,10 @@ fn test_retrieve_reminders_for_contact() {
     }
 
     let contact = &contacts[0];
-    println!("Fetching reminders for: {} (ID: {})", contact.name, contact.id);
+    println!(
+        "Fetching reminders for: {} (ID: {})",
+        contact.name, contact.id
+    );
 
     let result = client.get_contact_reminders(&contact.id, 50, 0);
 
@@ -346,13 +357,12 @@ fn test_reminder_due_date_handling() {
     let future_date = chrono::Utc::now() + chrono::Duration::days(30);
     let future_date_str = future_date.to_rfc3339();
 
-    let reminder = sample_reminder_with_due_date(
-        &contact.id,
-        "Future reminder",
-        &future_date_str,
-    );
+    let reminder = sample_reminder_with_due_date(&contact.id, "Future reminder", &future_date_str);
 
-    println!("Creating reminder with future due date: {}", future_date_str);
+    println!(
+        "Creating reminder with future due date: {}",
+        future_date_str
+    );
 
     let result = client.create_reminder(&reminder);
 
@@ -473,10 +483,7 @@ fn test_notes_pagination() {
             let page2_ids: Vec<String> = page2.iter().map(|n| n.id.clone()).collect();
 
             for id in &page1_ids {
-                assert!(
-                    !page2_ids.contains(id),
-                    "Found duplicate note across pages"
-                );
+                assert!(!page2_ids.contains(id), "Found duplicate note across pages");
             }
 
             println!("✓ No duplicates found between pages");
@@ -515,7 +522,11 @@ fn test_reminders_pagination() {
         if let Ok(reminders) = client.get_contact_reminders(&contact.id, 100, 0) {
             if reminders.len() > 5 {
                 contact_with_reminders = Some(contact);
-                println!("Found contact with {} reminders: {}", reminders.len(), contact.name);
+                println!(
+                    "Found contact with {} reminders: {}",
+                    reminders.len(),
+                    contact.name
+                );
                 break;
             }
         }

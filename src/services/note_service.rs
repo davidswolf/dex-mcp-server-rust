@@ -83,9 +83,8 @@ impl NoteService for NoteServiceImpl {
         limit: Option<usize>,
     ) -> DexApiResult<Vec<Note>> {
         // Validate contact ID
-        Self::validate_contact_id(contact_id).map_err(|e| {
-            crate::error::DexApiError::InvalidRequest(e)
-        })?;
+        Self::validate_contact_id(contact_id)
+            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
 
         let filter = HistoryFilterParams {
             start_date: date_from,
@@ -106,14 +105,12 @@ impl NoteService for NoteServiceImpl {
         tags: Option<Vec<String>>,
     ) -> DexApiResult<Note> {
         // Validate contact ID
-        Self::validate_contact_id(&contact_id).map_err(|e| {
-            crate::error::DexApiError::InvalidRequest(e)
-        })?;
+        Self::validate_contact_id(&contact_id)
+            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
 
         // Validate note content
-        Self::validate_note_content(&content).map_err(|e| {
-            crate::error::DexApiError::InvalidRequest(e)
-        })?;
+        Self::validate_note_content(&content)
+            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
 
         let note_params = CreateNoteParams {
             contact_id,
@@ -144,8 +141,7 @@ mod tests {
 
         let contact_repo =
             Arc::new(DexContactRepository::new(client.clone())) as Arc<dyn ContactRepository>;
-        let note_repo =
-            Arc::new(DexNoteRepository::new(client.clone())) as Arc<dyn NoteRepository>;
+        let note_repo = Arc::new(DexNoteRepository::new(client.clone())) as Arc<dyn NoteRepository>;
         let reminder_repo =
             Arc::new(DexReminderRepository::new(client.clone())) as Arc<dyn ReminderRepository>;
 

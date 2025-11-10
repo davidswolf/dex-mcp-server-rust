@@ -144,7 +144,8 @@ impl DexClient {
         let start = Instant::now();
         let url = self.build_url(path);
 
-        let result = self.agent
+        let result = self
+            .agent
             .get(&url)
             .set("x-hasura-dex-api-key", &self.api_key)
             .set("Content-Type", "application/json")
@@ -166,9 +167,13 @@ impl DexClient {
         let url = self.build_url(path);
 
         tracing::debug!("POST {}", url);
-        tracing::debug!("Request body: {}", serde_json::to_string_pretty(body).unwrap_or_else(|_| "<invalid json>".to_string()));
+        tracing::debug!(
+            "Request body: {}",
+            serde_json::to_string_pretty(body).unwrap_or_else(|_| "<invalid json>".to_string())
+        );
 
-        let result = self.agent
+        let result = self
+            .agent
             .post(&url)
             .set("x-hasura-dex-api-key", &self.api_key)
             .set("Content-Type", "application/json")
@@ -196,7 +201,8 @@ impl DexClient {
         let start = Instant::now();
         let url = self.build_url(path);
 
-        let result = self.agent
+        let result = self
+            .agent
             .put(&url)
             .set("x-hasura-dex-api-key", &self.api_key)
             .set("Content-Type", "application/json")
@@ -217,7 +223,8 @@ impl DexClient {
         let start = Instant::now();
         let url = self.build_url(path);
 
-        let result = self.agent
+        let result = self
+            .agent
             .delete(&url)
             .set("x-hasura-dex-api-key", &self.api_key)
             .call()
@@ -317,7 +324,7 @@ impl DexClient {
     /// Create a new contact.
     pub fn create_contact(&self, contact: &Contact) -> DexApiResult<Contact> {
         use crate::models::contact::CreateContactRequest;
-        
+
         let request = CreateContactRequest::from(contact);
         let body = serde_json::to_value(&request).map_err(DexApiError::JsonError)?;
 
@@ -325,17 +332,18 @@ impl DexClient {
         let response_body = response
             .into_string()
             .map_err(|e| DexApiError::HttpError(e.to_string()))?;
-        
+
         // Parse the wrapped response
-        let value: serde_json::Value = serde_json::from_str(&response_body)
-            .map_err(DexApiError::JsonError)?;
-        
-        let contact_data = value.get("insert_contacts_one")
-            .ok_or_else(|| DexApiError::HttpError("Missing insert_contacts_one in API response".to_string()))?;
-        
+        let value: serde_json::Value =
+            serde_json::from_str(&response_body).map_err(DexApiError::JsonError)?;
+
+        let contact_data = value.get("insert_contacts_one").ok_or_else(|| {
+            DexApiError::HttpError("Missing insert_contacts_one in API response".to_string())
+        })?;
+
         // Deserialize the contact from the wrapped response
-        let mut contact: Contact = serde_json::from_value(contact_data.clone())
-            .map_err(DexApiError::JsonError)?;
+        let mut contact: Contact =
+            serde_json::from_value(contact_data.clone()).map_err(DexApiError::JsonError)?;
         contact.populate_computed_fields();
         Ok(contact)
     }
@@ -343,7 +351,7 @@ impl DexClient {
     /// Update an existing contact.
     pub fn update_contact(&self, contact_id: &str, contact: &Contact) -> DexApiResult<Contact> {
         use crate::models::contact::UpdateContactRequest;
-        
+
         let request = UpdateContactRequest::from_contact(contact, contact_id);
         let body = serde_json::to_value(&request).map_err(DexApiError::JsonError)?;
 
@@ -352,17 +360,18 @@ impl DexClient {
         let response_body = response
             .into_string()
             .map_err(|e| DexApiError::HttpError(e.to_string()))?;
-        
+
         // Parse the wrapped response
-        let value: serde_json::Value = serde_json::from_str(&response_body)
-            .map_err(DexApiError::JsonError)?;
-        
-        let contact_data = value.get("update_contacts_by_pk")
-            .ok_or_else(|| DexApiError::HttpError("Missing update_contacts_by_pk in API response".to_string()))?;
-        
+        let value: serde_json::Value =
+            serde_json::from_str(&response_body).map_err(DexApiError::JsonError)?;
+
+        let contact_data = value.get("update_contacts_by_pk").ok_or_else(|| {
+            DexApiError::HttpError("Missing update_contacts_by_pk in API response".to_string())
+        })?;
+
         // Deserialize the contact from the wrapped response
-        let mut contact: Contact = serde_json::from_value(contact_data.clone())
-            .map_err(DexApiError::JsonError)?;
+        let mut contact: Contact =
+            serde_json::from_value(contact_data.clone()).map_err(DexApiError::JsonError)?;
         contact.populate_computed_fields();
         Ok(contact)
     }
@@ -382,11 +391,12 @@ impl DexClient {
             .into_string()
             .map_err(|e| DexApiError::HttpError(e.to_string()))?;
 
-        let mut contacts = if let Ok(paginated) = serde_json::from_str::<PaginatedResponse<Contact>>(&body) {
-            paginated.data
-        } else {
-            serde_json::from_str::<Vec<Contact>>(&body).map_err(DexApiError::JsonError)?
-        };
+        let mut contacts =
+            if let Ok(paginated) = serde_json::from_str::<PaginatedResponse<Contact>>(&body) {
+                paginated.data
+            } else {
+                serde_json::from_str::<Vec<Contact>>(&body).map_err(DexApiError::JsonError)?
+            };
 
         for contact in &mut contacts {
             contact.populate_computed_fields();
@@ -441,7 +451,10 @@ impl DexClient {
         let request = crate::models::CreateNoteRequest::from(note);
         let body = serde_json::to_value(&request).map_err(DexApiError::JsonError)?;
 
-        tracing::debug!("Note request payload: {}", serde_json::to_string_pretty(&body).unwrap_or_else(|_| "<invalid>".to_string()));
+        tracing::debug!(
+            "Note request payload: {}",
+            serde_json::to_string_pretty(&body).unwrap_or_else(|_| "<invalid>".to_string())
+        );
 
         // Notes are created via the timeline_items endpoint
         let response = self.post("/timeline_items", &body)?;
@@ -453,36 +466,41 @@ impl DexClient {
 
         // The API wraps the response in insert_timeline_items_one
         // Parse as raw JSON first to extract what we need
-        let value: serde_json::Value = serde_json::from_str(&response_body)
-            .map_err(DexApiError::JsonError)?;
+        let value: serde_json::Value =
+            serde_json::from_str(&response_body).map_err(DexApiError::JsonError)?;
 
-        let timeline_item = value.get("insert_timeline_items_one")
-            .ok_or_else(|| DexApiError::HttpError("Missing insert_timeline_items_one in API response".to_string()))?;
+        let timeline_item = value.get("insert_timeline_items_one").ok_or_else(|| {
+            DexApiError::HttpError("Missing insert_timeline_items_one in API response".to_string())
+        })?;
 
         // Extract the note details
-        let id = timeline_item.get("id")
+        let id = timeline_item
+            .get("id")
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_string();
 
-        let content = timeline_item.get("note")
+        let content = timeline_item
+            .get("note")
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_string();
 
-        let event_time = timeline_item.get("event_time")
+        let event_time = timeline_item
+            .get("event_time")
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_string();
 
         // Extract contact ID from timeline_items_contacts
-        let contact_id = timeline_item.get("timeline_items_contacts")
+        let contact_id = timeline_item
+            .get("timeline_items_contacts")
             .and_then(|v| v.as_array())
             .and_then(|arr| arr.first())
             .and_then(|item| item.get("contact"))
             .and_then(|contact| contact.get("id"))
             .and_then(|v| v.as_str())
-            .unwrap_or(&note.contact_id)  // Fallback to original
+            .unwrap_or(&note.contact_id) // Fallback to original
             .to_string();
 
         let created_note = Note {
@@ -503,7 +521,7 @@ impl DexClient {
     /// Update an existing note (timeline item).
     pub fn update_note(&self, note_id: &str, note: &Note) -> DexApiResult<Note> {
         use crate::models::note::UpdateNoteRequest;
-        
+
         let request = UpdateNoteRequest::from(note);
         let body = serde_json::to_value(&request).map_err(DexApiError::JsonError)?;
 
@@ -512,34 +530,40 @@ impl DexClient {
         let response_body = response
             .into_string()
             .map_err(|e| DexApiError::HttpError(e.to_string()))?;
-        
+
         // Parse the wrapped response
-        let value: serde_json::Value = serde_json::from_str(&response_body)
-            .map_err(DexApiError::JsonError)?;
-        
-        let timeline_item = value.get("update_timeline_items_by_pk")
-            .ok_or_else(|| DexApiError::HttpError("Missing update_timeline_items_by_pk in API response".to_string()))?;
-        
+        let value: serde_json::Value =
+            serde_json::from_str(&response_body).map_err(DexApiError::JsonError)?;
+
+        let timeline_item = value.get("update_timeline_items_by_pk").ok_or_else(|| {
+            DexApiError::HttpError(
+                "Missing update_timeline_items_by_pk in API response".to_string(),
+            )
+        })?;
+
         // Extract fields from the response
-        let id = timeline_item.get("id")
+        let id = timeline_item
+            .get("id")
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_string();
-        
-        let content = timeline_item.get("note")
+
+        let content = timeline_item
+            .get("note")
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_string();
-        
+
         // Extract contact_id from contact_ids array
-        let contact_id = timeline_item.get("contact_ids")
+        let contact_id = timeline_item
+            .get("contact_ids")
             .and_then(|v| v.as_array())
             .and_then(|arr| arr.first())
             .and_then(|item| item.get("contact_id"))
             .and_then(|v| v.as_str())
             .unwrap_or(&note.contact_id)
             .to_string();
-        
+
         // Build the Note object
         let updated_note = Note {
             id,
@@ -550,7 +574,7 @@ impl DexClient {
             tags: note.tags.clone(),
             source: note.source.clone(),
         };
-        
+
         Ok(updated_note)
     }
 
@@ -566,34 +590,58 @@ impl DexClient {
     /// Get all reminders for a contact.
     /// Note: The Dex API doesn't have a direct endpoint for contact reminders,
     /// so we fetch all reminders and filter by contact_id.
+    /// This implementation uses proper pagination to handle large reminder sets.
     pub fn get_contact_reminders(
         &self,
         contact_id: &str,
         limit: usize,
         offset: usize,
     ) -> DexApiResult<Vec<Reminder>> {
-        // Fetch all reminders with a large limit to capture most reminders
-        // TODO: Implement proper pagination if needed
-        let path = format!("/reminders?limit=1000&offset={}", offset);
-        let response = self.get(&path)?;
-        let body = response
-            .into_string()
-            .map_err(|e| DexApiError::HttpError(e.to_string()))?;
+        const PAGE_SIZE: usize = 100;
+        let mut all_filtered_reminders = Vec::new();
+        let mut current_offset = 0;
+        let needed_count = offset + limit;
 
-        // Parse using the Dex reminders response format
-        let reminders_response: RemindersResponse =
-            serde_json::from_str(&body).map_err(DexApiError::JsonError)?;
+        // Keep fetching pages until we have enough filtered results or no more data
+        loop {
+            let path = format!("/reminders?limit={}&offset={}", PAGE_SIZE, current_offset);
+            let response = self.get(&path)?;
+            let body = response
+                .into_string()
+                .map_err(|e| DexApiError::HttpError(e.to_string()))?;
 
-        // Filter reminders for this contact
-        let filtered_reminders: Vec<Reminder> = reminders_response
-            .reminders
+            // Parse using the Dex reminders response format
+            let reminders_response: RemindersResponse =
+                serde_json::from_str(&body).map_err(DexApiError::JsonError)?;
+
+            let page_reminders = reminders_response.reminders;
+            let fetched_count = page_reminders.len();
+
+            // Filter this page for the target contact
+            let filtered_page: Vec<Reminder> = page_reminders
+                .into_iter()
+                .filter(|r| r.contact_id == contact_id)
+                .collect();
+
+            all_filtered_reminders.extend(filtered_page);
+
+            // Stop if we have enough results or if we received fewer than requested (no more pages)
+            if all_filtered_reminders.len() >= needed_count || fetched_count < PAGE_SIZE {
+                break;
+            }
+
+            current_offset += PAGE_SIZE;
+        }
+
+        // Apply offset and limit to the filtered results
+        let result: Vec<Reminder> = all_filtered_reminders
             .into_iter()
-            .filter(|r| r.contact_id == contact_id)
+            .skip(offset)
             .take(limit)
             .collect();
 
-        self.metrics.record_reminders_fetched(filtered_reminders.len());
-        Ok(filtered_reminders)
+        self.metrics.record_reminders_fetched(result.len());
+        Ok(result)
     }
 
     /// Get a single reminder by ID.
@@ -608,13 +656,20 @@ impl DexClient {
 
     /// Create a new reminder for a contact.
     pub fn create_reminder(&self, reminder: &Reminder) -> DexApiResult<Reminder> {
-        tracing::info!("Creating reminder for contact: {}, due: {}", reminder.contact_id, reminder.due_date);
+        tracing::info!(
+            "Creating reminder for contact: {}, due: {}",
+            reminder.contact_id,
+            reminder.due_date
+        );
 
         // Convert to CreateReminderRequest to properly serialize contact_ids
         let request = crate::models::CreateReminderRequest::from(reminder);
         let body = serde_json::to_value(&request).map_err(DexApiError::JsonError)?;
 
-        tracing::debug!("Reminder request payload: {}", serde_json::to_string_pretty(&body).unwrap_or_else(|_| "<invalid>".to_string()));
+        tracing::debug!(
+            "Reminder request payload: {}",
+            serde_json::to_string_pretty(&body).unwrap_or_else(|_| "<invalid>".to_string())
+        );
 
         let response = self.post("/reminders", &body)?;
         let response_body = response
@@ -622,41 +677,47 @@ impl DexClient {
             .map_err(|e| DexApiError::HttpError(e.to_string()))?;
 
         // Parse the wrapped response
-        let value: serde_json::Value = serde_json::from_str(&response_body)
-            .map_err(DexApiError::JsonError)?;
-        
-        let reminder_item = value.get("insert_reminders_one")
-            .ok_or_else(|| DexApiError::HttpError("Missing insert_reminders_one in API response".to_string()))?;
-        
+        let value: serde_json::Value =
+            serde_json::from_str(&response_body).map_err(DexApiError::JsonError)?;
+
+        let reminder_item = value.get("insert_reminders_one").ok_or_else(|| {
+            DexApiError::HttpError("Missing insert_reminders_one in API response".to_string())
+        })?;
+
         // Extract fields from the response
-        let id = reminder_item.get("id")
+        let id = reminder_item
+            .get("id")
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_string();
-        
-        let text = reminder_item.get("body")
+
+        let text = reminder_item
+            .get("body")
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_string();
-        
-        let due_date = reminder_item.get("due_at_date")
+
+        let due_date = reminder_item
+            .get("due_at_date")
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_string();
-        
-        let completed = reminder_item.get("is_complete")
+
+        let completed = reminder_item
+            .get("is_complete")
             .and_then(|v| v.as_bool())
             .unwrap_or(false);
-        
+
         // Extract contact_id from contact_ids array
-        let contact_id = reminder_item.get("contact_ids")
+        let contact_id = reminder_item
+            .get("contact_ids")
             .and_then(|v| v.as_array())
             .and_then(|arr| arr.first())
             .and_then(|item| item.get("contact_id"))
             .and_then(|v| v.as_str())
             .unwrap_or(&reminder.contact_id)
             .to_string();
-        
+
         // Build the Reminder object
         let created_reminder = Reminder {
             id,
@@ -670,8 +731,11 @@ impl DexClient {
             tags: reminder.tags.clone(),
             priority: reminder.priority.clone(),
         };
-        
-        tracing::info!("Reminder created successfully with id: {}", created_reminder.id);
+
+        tracing::info!(
+            "Reminder created successfully with id: {}",
+            created_reminder.id
+        );
 
         Ok(created_reminder)
     }
@@ -683,7 +747,7 @@ impl DexClient {
         reminder: &Reminder,
     ) -> DexApiResult<Reminder> {
         use crate::models::reminder::UpdateReminderRequest;
-        
+
         let request = UpdateReminderRequest::from(reminder);
         let body = serde_json::to_value(&request).map_err(DexApiError::JsonError)?;
 
@@ -692,43 +756,49 @@ impl DexClient {
         let response_body = response
             .into_string()
             .map_err(|e| DexApiError::HttpError(e.to_string()))?;
-        
+
         // Parse the wrapped response
-        let value: serde_json::Value = serde_json::from_str(&response_body)
-            .map_err(DexApiError::JsonError)?;
-        
-        let reminder_item = value.get("update_reminders_by_pk")
-            .ok_or_else(|| DexApiError::HttpError("Missing update_reminders_by_pk in API response".to_string()))?;
-        
+        let value: serde_json::Value =
+            serde_json::from_str(&response_body).map_err(DexApiError::JsonError)?;
+
+        let reminder_item = value.get("update_reminders_by_pk").ok_or_else(|| {
+            DexApiError::HttpError("Missing update_reminders_by_pk in API response".to_string())
+        })?;
+
         // Extract fields from the response
-        let id = reminder_item.get("id")
+        let id = reminder_item
+            .get("id")
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_string();
-        
-        let text = reminder_item.get("text")
+
+        let text = reminder_item
+            .get("text")
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_string();
-        
-        let due_date = reminder_item.get("due_at_date")
+
+        let due_date = reminder_item
+            .get("due_at_date")
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_string();
-        
-        let completed = reminder_item.get("is_complete")
+
+        let completed = reminder_item
+            .get("is_complete")
             .and_then(|v| v.as_bool())
             .unwrap_or(false);
-        
+
         // Extract contact_id from reminders_contacts array
-        let contact_id = reminder_item.get("reminders_contacts")
+        let contact_id = reminder_item
+            .get("reminders_contacts")
             .and_then(|v| v.as_array())
             .and_then(|arr| arr.first())
             .and_then(|item| item.get("contact_id"))
             .and_then(|v| v.as_str())
             .unwrap_or(&reminder.contact_id)
             .to_string();
-        
+
         // Build the Reminder object
         let updated_reminder = Reminder {
             id,
@@ -742,7 +812,7 @@ impl DexClient {
             tags: reminder.tags.clone(),
             priority: reminder.priority.clone(),
         };
-        
+
         Ok(updated_reminder)
     }
 

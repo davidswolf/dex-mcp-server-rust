@@ -205,7 +205,8 @@ impl RelationshipHistoryTools {
         loop {
             let notes = self
                 .note_repo
-                .get_for_contact(contact_id, PAGE_SIZE, offset).await?;
+                .get_for_contact(contact_id, PAGE_SIZE, offset)
+                .await?;
             let count = notes.len();
             all_notes.extend(notes);
 
@@ -228,7 +229,8 @@ impl RelationshipHistoryTools {
         loop {
             let reminders = self
                 .reminder_repo
-                .get_for_contact(contact_id, PAGE_SIZE, offset).await?;
+                .get_for_contact(contact_id, PAGE_SIZE, offset)
+                .await?;
             let count = reminders.len();
             all_reminders.extend(reminders);
 
@@ -318,8 +320,8 @@ impl RelationshipHistoryTools {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::Config;
     use crate::client::{AsyncDexClient, AsyncDexClientImpl, DexClient};
+    use crate::config::Config;
     use crate::repositories::{DexContactRepository, DexNoteRepository, DexReminderRepository};
 
     fn create_test_note(id: &str, created_at: &str) -> Note {

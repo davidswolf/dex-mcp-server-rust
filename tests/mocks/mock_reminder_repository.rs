@@ -1,9 +1,9 @@
 use async_trait::async_trait;
-use std::sync::{Arc, Mutex};
-use std::collections::HashMap;
-use dex_mcp_server::repositories::ReminderRepository;
+use dex_mcp_server::error::{DexApiError, DexApiResult};
 use dex_mcp_server::models::Reminder;
-use dex_mcp_server::error::{DexApiResult, DexApiError};
+use dex_mcp_server::repositories::ReminderRepository;
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
 
 /// Mock reminder repository for testing.
 #[allow(dead_code)]
@@ -104,10 +104,7 @@ impl ReminderRepository for MockReminderRepository {
         let mut reminders = self.reminders.lock().unwrap();
 
         if !reminders.contains_key(id) {
-            return Err(DexApiError::NotFound(format!(
-                "Reminder {} not found",
-                id
-            )));
+            return Err(DexApiError::NotFound(format!("Reminder {} not found", id)));
         }
 
         reminders.insert(id.to_string(), reminder.clone());
@@ -120,10 +117,7 @@ impl ReminderRepository for MockReminderRepository {
         let mut reminders = self.reminders.lock().unwrap();
 
         if !reminders.contains_key(id) {
-            return Err(DexApiError::NotFound(format!(
-                "Reminder {} not found",
-                id
-            )));
+            return Err(DexApiError::NotFound(format!("Reminder {} not found", id)));
         }
 
         reminders.remove(id);

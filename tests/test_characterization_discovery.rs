@@ -14,10 +14,7 @@ use std::time::Instant;
 
 /// Helper to create a test DexClient with mock server
 fn setup_mock_client(server: &Server) -> DexClient {
-    DexClient::with_base_url(
-        server.url(),
-        "test_api_key".to_string(),
-    )
+    DexClient::with_base_url(server.url(), "test_api_key".to_string())
 }
 
 /// Helper to create mock contacts
@@ -53,10 +50,12 @@ async fn test_find_contact_by_email() {
     let mut server = Server::new_async().await;
     let contacts = create_test_contacts();
 
-    let mock = server.mock("GET", "/api/contacts")
-        .match_query(mockito::Matcher::AllOf(vec![
-            mockito::Matcher::UrlEncoded("email".into(), "john.doe@example.com".into()),
-        ]))
+    let mock = server
+        .mock("GET", "/api/contacts")
+        .match_query(mockito::Matcher::AllOf(vec![mockito::Matcher::UrlEncoded(
+            "email".into(),
+            "john.doe@example.com".into(),
+        )]))
         .with_status(200)
         .with_header("content-type", "application/json")
         .with_body(json!([contacts[0].clone()]).to_string())
@@ -84,7 +83,8 @@ async fn test_find_contact_by_name() {
     let mut server = Server::new_async().await;
     let contacts = create_test_contacts();
 
-    let mock = server.mock("GET", "/api/contacts")
+    let mock = server
+        .mock("GET", "/api/contacts")
         .match_query(mockito::Matcher::AllOf(vec![
             mockito::Matcher::UrlEncoded("limit".into(), "100".into()),
             mockito::Matcher::UrlEncoded("offset".into(), "0".into()),

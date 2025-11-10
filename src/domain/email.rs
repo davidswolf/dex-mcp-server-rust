@@ -87,13 +87,19 @@ impl EmailAddress {
     /// Get the local part (before '@').
     pub fn local_part(&self) -> &str {
         // SAFETY: Constructor validates exactly one '@' exists
-        self.0.split('@').next().expect("email validated to contain '@'")
+        self.0
+            .split('@')
+            .next()
+            .expect("email validated to contain '@'")
     }
 
     /// Get the domain part (after '@').
     pub fn domain(&self) -> &str {
         // SAFETY: Constructor validates exactly one '@' exists
-        self.0.split('@').nth(1).expect("email validated to contain '@'")
+        self.0
+            .split('@')
+            .nth(1)
+            .expect("email validated to contain '@'")
     }
 }
 

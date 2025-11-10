@@ -106,9 +106,12 @@ impl SearchTools {
         let (search_cache, from_cache) = self.get_or_build_cache().await?;
 
         // Perform search on the index
-        let results = search_cache
-            .index
-            .search(&search_cache.contacts, &params.query, max_results, min_confidence);
+        let results = search_cache.index.search(
+            &search_cache.contacts,
+            &params.query,
+            max_results,
+            min_confidence,
+        );
         let index_size = search_cache.index.document_count();
 
         Ok(SearchResponse {
@@ -143,10 +146,7 @@ impl SearchTools {
         );
 
         // Create owned contact data for parallel processing
-        let contact_data: Vec<_> = contacts
-            .iter()
-            .map(|c| (c.clone(), c.id.clone()))
-            .collect();
+        let contact_data: Vec<_> = contacts.iter().map(|c| (c.clone(), c.id.clone())).collect();
 
         // Fetch notes and reminders in parallel with bounded concurrency
         let results = stream::iter(contact_data)
@@ -163,11 +163,7 @@ impl SearchTools {
 
                     // Don't fail entire build if one contact fails
                     let notes = notes_result.unwrap_or_else(|e| {
-                        tracing::warn!(
-                            "Failed to fetch notes for contact {}: {}",
-                            contact_id,
-                            e
-                        );
+                        tracing::warn!("Failed to fetch notes for contact {}: {}", contact_id, e);
                         Vec::new()
                     });
 

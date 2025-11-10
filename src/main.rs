@@ -46,9 +46,11 @@ async fn main() -> Result<()> {
     let client = Arc::new(AsyncDexClientImpl::new(sync_client)) as Arc<dyn AsyncDexClient>;
 
     // Initialize repositories
-    let contact_repo = Arc::new(DexContactRepository::new(client.clone())) as Arc<dyn ContactRepository>;
+    let contact_repo =
+        Arc::new(DexContactRepository::new(client.clone())) as Arc<dyn ContactRepository>;
     let note_repo = Arc::new(DexNoteRepository::new(client.clone())) as Arc<dyn NoteRepository>;
-    let reminder_repo = Arc::new(DexReminderRepository::new(client.clone())) as Arc<dyn ReminderRepository>;
+    let reminder_repo =
+        Arc::new(DexReminderRepository::new(client.clone())) as Arc<dyn ReminderRepository>;
 
     // Cache TTL configuration
     let cache_ttl_secs = config.cache_ttl_minutes * 60; // Convert minutes to seconds
@@ -59,12 +61,15 @@ async fn main() -> Result<()> {
         note_repo,
         reminder_repo,
         client,
-        cache_ttl_secs,  // discovery cache TTL
-        cache_ttl_secs,  // search cache TTL
+        cache_ttl_secs, // discovery cache TTL
+        cache_ttl_secs, // search cache TTL
     );
 
     info!("Dex MCP Server initialized");
-    info!("Cache TTL: {} minutes ({} seconds)", config.cache_ttl_minutes, cache_ttl_secs);
+    info!(
+        "Cache TTL: {} minutes ({} seconds)",
+        config.cache_ttl_minutes, cache_ttl_secs
+    );
 
     // Run the server (this will block until the server exits)
     info!("Starting MCP server with stdio transport");

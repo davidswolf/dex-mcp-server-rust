@@ -4,11 +4,11 @@
 
 use crate::error::DexApiResult;
 use crate::models::{Contact, SocialProfile};
+use crate::tools::search::{SearchParams, SearchResponse};
 use crate::tools::{
     ContactDiscoveryTools, ContactEnrichmentTools, EnrichContactParams, FindContactParams,
     FindContactResponse, SearchTools,
 };
-use crate::tools::search::{SearchParams, SearchResponse};
 use async_trait::async_trait;
 use std::sync::Arc;
 use tokio::sync::RwLock;
@@ -125,9 +125,8 @@ impl ContactService for ContactServiceImpl {
         min_confidence: Option<u8>,
     ) -> DexApiResult<SearchResponse> {
         // Validate query
-        Self::validate_search_query(&query).map_err(|e| {
-            crate::error::DexApiError::InvalidRequest(e)
-        })?;
+        Self::validate_search_query(&query)
+            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
 
         let search_params = SearchParams {
             query,
@@ -148,9 +147,8 @@ impl ContactService for ContactServiceImpl {
     ) -> DexApiResult<FindContactResponse> {
         // Validate email if provided
         if let Some(ref email_val) = email {
-            Self::validate_email(email_val).map_err(|e| {
-                crate::error::DexApiError::InvalidRequest(e)
-            })?;
+            Self::validate_email(email_val)
+                .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
         }
 
         let find_params = FindContactParams {
@@ -169,9 +167,8 @@ impl ContactService for ContactServiceImpl {
 
     async fn get_contact_details(&self, contact_id: &str) -> DexApiResult<Contact> {
         // Validate contact ID
-        Self::validate_contact_id(contact_id).map_err(|e| {
-            crate::error::DexApiError::InvalidRequest(e)
-        })?;
+        Self::validate_contact_id(contact_id)
+            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
 
         let discovery = self.discovery_tools.read().await;
         discovery.get_contact_details(contact_id).await
@@ -179,15 +176,13 @@ impl ContactService for ContactServiceImpl {
 
     async fn enrich_contact(&self, params: ContactEnrichParams) -> DexApiResult<Contact> {
         // Validate contact ID
-        Self::validate_contact_id(&params.contact_id).map_err(|e| {
-            crate::error::DexApiError::InvalidRequest(e)
-        })?;
+        Self::validate_contact_id(&params.contact_id)
+            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
 
         // Validate email if provided
         if let Some(ref email_val) = params.email {
-            Self::validate_email(email_val).map_err(|e| {
-                crate::error::DexApiError::InvalidRequest(e)
-            })?;
+            Self::validate_email(email_val)
+                .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
         }
 
         // Convert social_profiles from strings to SocialProfile objects
@@ -220,10 +215,7 @@ impl ContactService for ContactServiceImpl {
             social_profiles,
         };
 
-        let updated_contact = self
-            .enrichment_tools
-            .enrich_contact(enrich_params)
-            .await?;
+        let updated_contact = self.enrichment_tools.enrich_contact(enrich_params).await?;
 
         // Invalidate discovery cache after enrichment
         self.invalidate_cache().await;
@@ -258,8 +250,7 @@ mod tests {
 
         let contact_repo =
             Arc::new(DexContactRepository::new(client.clone())) as Arc<dyn ContactRepository>;
-        let note_repo =
-            Arc::new(DexNoteRepository::new(client.clone())) as Arc<dyn NoteRepository>;
+        let note_repo = Arc::new(DexNoteRepository::new(client.clone())) as Arc<dyn NoteRepository>;
         let reminder_repo =
             Arc::new(DexReminderRepository::new(client.clone())) as Arc<dyn ReminderRepository>;
 

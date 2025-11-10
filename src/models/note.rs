@@ -253,8 +253,10 @@ mod tests {
         println!("Serialized note for CREATE:\n{}", json);
 
         // This will PASS because contact_id has skip_serializing
-        assert!(!json.contains("contact"),
-            "BUG: contact_id is not serialized, so API will reject this!");
+        assert!(
+            !json.contains("contact"),
+            "BUG: contact_id is not serialized, so API will reject this!"
+        );
     }
 
     #[test]
@@ -272,26 +274,48 @@ mod tests {
         println!("CreateNoteRequest JSON:\n{}", json);
 
         // Verify timeline_event wrapper is present
-        assert!(json.contains("timeline_event"), "timeline_event wrapper should be present");
-        assert!(json.contains("abb29721-d8c1-4a9f-a684-05c3ec7595ee"),
-            "contact_id value should be in the request");
+        assert!(
+            json.contains("timeline_event"),
+            "timeline_event wrapper should be present"
+        );
+        assert!(
+            json.contains("abb29721-d8c1-4a9f-a684-05c3ec7595ee"),
+            "contact_id value should be in the request"
+        );
 
         // Deserialize to check the structure
         let value: serde_json::Value = serde_json::from_str(&json).unwrap();
-        assert!(value["timeline_event"].is_object(), "timeline_event should be an object");
+        assert!(
+            value["timeline_event"].is_object(),
+            "timeline_event should be an object"
+        );
 
         let timeline_event = &value["timeline_event"];
-        assert_eq!(timeline_event["note"].as_str().unwrap(), "Reach out to Sayee");
+        assert_eq!(
+            timeline_event["note"].as_str().unwrap(),
+            "Reach out to Sayee"
+        );
         assert_eq!(timeline_event["meeting_type"].as_str().unwrap(), "note");
-        assert!(timeline_event["event_time"].is_string(), "event_time should be a string");
+        assert!(
+            timeline_event["event_time"].is_string(),
+            "event_time should be a string"
+        );
 
         // Check timeline_items_contacts structure
         let contacts = &timeline_event["timeline_items_contacts"]["data"];
-        assert!(contacts.is_array(), "timeline_items_contacts.data should be an array");
-        assert_eq!(contacts.as_array().unwrap().len(), 1,
-            "contacts array should have exactly 1 element");
-        assert_eq!(contacts[0]["contact_id"].as_str().unwrap(),
+        assert!(
+            contacts.is_array(),
+            "timeline_items_contacts.data should be an array"
+        );
+        assert_eq!(
+            contacts.as_array().unwrap().len(),
+            1,
+            "contacts array should have exactly 1 element"
+        );
+        assert_eq!(
+            contacts[0]["contact_id"].as_str().unwrap(),
             "abb29721-d8c1-4a9f-a684-05c3ec7595ee",
-            "contact_id should match");
+            "contact_id should match"
+        );
     }
 }

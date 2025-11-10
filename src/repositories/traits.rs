@@ -1,6 +1,6 @@
-use async_trait::async_trait;
-use crate::models::*;
 use crate::error::DexApiResult;
+use crate::models::*;
+use async_trait::async_trait;
 
 /// Repository for managing contacts.
 ///

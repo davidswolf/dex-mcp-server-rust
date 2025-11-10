@@ -69,7 +69,11 @@ fn test_contact_crud_lifecycle() {
         Ok(c) => {
             println!("  ✓ Contact created successfully");
             println!("    Contact ID: {}", c.id);
-            println!("    Name: {} {}", c.first_name.as_deref().unwrap_or(""), c.last_name.as_deref().unwrap_or(""));
+            println!(
+                "    Name: {} {}",
+                c.first_name.as_deref().unwrap_or(""),
+                c.last_name.as_deref().unwrap_or("")
+            );
             println!("    Email: {}", c.email.as_deref().unwrap_or(""));
             assert_contact_valid(&c);
             assert_eq!(c.first_name.as_deref(), Some(original_first_name.as_str()));
@@ -119,8 +123,15 @@ fn test_contact_crud_lifecycle() {
     match client.update_contact(&created_contact.id, &updated_contact) {
         Ok(c) => {
             println!("  ✓ Contact updated successfully");
-            println!("    New name: {} {}", c.first_name.as_deref().unwrap_or(""), c.last_name.as_deref().unwrap_or(""));
-            println!("    New job title: {}", c.job_title.as_deref().unwrap_or(""));
+            println!(
+                "    New name: {} {}",
+                c.first_name.as_deref().unwrap_or(""),
+                c.last_name.as_deref().unwrap_or("")
+            );
+            println!(
+                "    New job title: {}",
+                c.job_title.as_deref().unwrap_or("")
+            );
             assert_eq!(c.id, created_contact.id);
             assert_eq!(c.first_name.as_deref(), Some(updated_first_name.as_str()));
             assert_eq!(c.job_title.as_deref(), Some("Senior Engineer"));
@@ -139,7 +150,9 @@ fn test_contact_crud_lifecycle() {
         }
     };
 
-    let updated_contact_from_api = contacts_after_update.iter().find(|c| c.id == created_contact.id);
+    let updated_contact_from_api = contacts_after_update
+        .iter()
+        .find(|c| c.id == created_contact.id);
     match updated_contact_from_api {
         Some(c) => {
             println!("  ✓ Update verified");
@@ -171,7 +184,9 @@ fn test_contact_crud_lifecycle() {
         }
     };
 
-    let deleted_contact_check = contacts_after_delete.iter().find(|c| c.id == created_contact.id);
+    let deleted_contact_check = contacts_after_delete
+        .iter()
+        .find(|c| c.id == created_contact.id);
     match deleted_contact_check {
         None => {
             println!("  ✓ Deletion verified - contact no longer exists");
@@ -269,7 +284,10 @@ fn test_contact_multiple_updates() {
         match client.update_contact(&current_contact.id, &current_contact) {
             Ok(updated) => {
                 println!("  ✓ Updated successfully");
-                assert_eq!(updated.job_title.as_deref(), Some(format!("Position #{}", i).as_str()));
+                assert_eq!(
+                    updated.job_title.as_deref(),
+                    Some(format!("Position #{}", i).as_str())
+                );
                 current_contact = updated;
             }
             Err(e) => {
@@ -352,7 +370,10 @@ fn test_contact_minimal_create() {
         Ok(c) => {
             println!("✓ Minimal contact created: {}", c.id);
             contact_guard.set_id(c.id.clone());
-            assert_eq!(c.first_name.as_deref(), Some(format!("Minimal{}", timestamp).as_str()));
+            assert_eq!(
+                c.first_name.as_deref(),
+                Some(format!("Minimal{}", timestamp).as_str())
+            );
             assert_eq!(c.last_name.as_deref(), Some("Test"));
         }
         Err(e) => {

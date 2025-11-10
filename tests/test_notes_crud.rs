@@ -72,7 +72,10 @@ fn test_note_crud_lifecycle() {
     };
 
     let contact = &contacts[0];
-    println!("Testing note CRUD with contact: {} (ID: {})", contact.name, contact.id);
+    println!(
+        "Testing note CRUD with contact: {} (ID: {})",
+        contact.name, contact.id
+    );
 
     // Initialize cleanup guard
     let mut note_guard = NoteGuard::new(&client);
@@ -272,7 +275,10 @@ fn test_note_multiple_updates() {
     };
 
     let contact = &contacts[0];
-    println!("Testing multiple note updates with contact: {}", contact.name);
+    println!(
+        "Testing multiple note updates with contact: {}",
+        contact.name
+    );
 
     let mut note_guard = NoteGuard::new(&client);
 

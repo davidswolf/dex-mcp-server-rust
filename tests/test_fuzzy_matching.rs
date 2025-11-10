@@ -100,10 +100,19 @@ fn test_partial_name_match() {
     let matches = matcher.find_matches(&query, &contacts, 10, 30);
 
     if !matches.is_empty() {
-        println!("Found {} matches for partial name '{}':", matches.len(), first_name);
+        println!(
+            "Found {} matches for partial name '{}':",
+            matches.len(),
+            first_name
+        );
 
         for (i, m) in matches.iter().take(5).enumerate() {
-            println!("  {}. {} (confidence: {})", i + 1, m.contact.name, m.confidence);
+            println!(
+                "  {}. {} (confidence: {})",
+                i + 1,
+                m.contact.name,
+                m.confidence
+            );
         }
 
         // Verify all matches contain the search term (case-insensitive)
@@ -184,7 +193,12 @@ fn test_typo_tolerance() {
         println!("Found {} matches despite typo:", matches.len());
 
         for (i, m) in matches.iter().take(3).enumerate() {
-            println!("  {}. {} (confidence: {})", i + 1, m.contact.name, m.confidence);
+            println!(
+                "  {}. {} (confidence: {})",
+                i + 1,
+                m.contact.name,
+                m.confidence
+            );
         }
 
         // Check if original contact is in the results
@@ -332,9 +346,9 @@ fn test_full_name_vs_parts() {
     let contacts = result.unwrap();
 
     // Find a contact with a full name (first and last)
-    let contact_with_full_name = contacts.iter().find(|c| {
-        c.name.split_whitespace().count() >= 2
-    });
+    let contact_with_full_name = contacts
+        .iter()
+        .find(|c| c.name.split_whitespace().count() >= 2);
 
     if let Some(contact) = contact_with_full_name {
         let full_name = &contact.name;
@@ -368,11 +382,13 @@ fn test_full_name_vs_parts() {
 
             // Full name should have higher confidence for the exact match
             if !full_matches.is_empty() && !first_matches.is_empty() {
-                let full_confidence = full_matches.iter()
+                let full_confidence = full_matches
+                    .iter()
                     .find(|m| m.contact.name == *full_name)
                     .map(|m| m.confidence);
 
-                let first_confidence = first_matches.iter()
+                let first_confidence = first_matches
+                    .iter()
                     .find(|m| m.contact.name == *full_name)
                     .map(|m| m.confidence);
 

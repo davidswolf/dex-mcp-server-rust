@@ -72,7 +72,10 @@ fn test_reminder_crud_lifecycle() {
     };
 
     let contact = &contacts[0];
-    println!("Testing reminder CRUD with contact: {} (ID: {})", contact.name, contact.id);
+    println!(
+        "Testing reminder CRUD with contact: {} (ID: {})",
+        contact.name, contact.id
+    );
 
     // Initialize cleanup guard
     let mut reminder_guard = ReminderGuard::new(&client);
@@ -154,7 +157,9 @@ fn test_reminder_crud_lifecycle() {
         }
     };
 
-    let updated_reminder_from_api = reminders_after_update.iter().find(|r| r.id == created_reminder.id);
+    let updated_reminder_from_api = reminders_after_update
+        .iter()
+        .find(|r| r.id == created_reminder.id);
     match updated_reminder_from_api {
         Some(r) => {
             println!("  ✓ Update verified");
@@ -186,7 +191,9 @@ fn test_reminder_crud_lifecycle() {
         }
     };
 
-    let deleted_reminder_check = reminders_after_delete.iter().find(|r| r.id == created_reminder.id);
+    let deleted_reminder_check = reminders_after_delete
+        .iter()
+        .find(|r| r.id == created_reminder.id);
     match deleted_reminder_check {
         None => {
             println!("  ✓ Deletion verified - reminder no longer exists");
@@ -299,7 +306,10 @@ fn test_reminder_batch_create_and_cleanup() {
     };
 
     let contact = &contacts[0];
-    println!("Testing batch reminder creation with contact: {}", contact.name);
+    println!(
+        "Testing batch reminder creation with contact: {}",
+        contact.name
+    );
 
     let mut reminder_guards = Vec::new();
 
@@ -351,7 +361,10 @@ fn test_reminder_update_due_date() {
     };
 
     let contact = &contacts[0];
-    println!("Testing reminder due date update with contact: {}", contact.name);
+    println!(
+        "Testing reminder due date update with contact: {}",
+        contact.name
+    );
 
     let mut reminder_guard = ReminderGuard::new(&client);
 
@@ -474,7 +487,10 @@ fn test_reminder_with_past_due_date() {
     };
 
     let contact = &contacts[0];
-    println!("Testing overdue reminder creation with contact: {}", contact.name);
+    println!(
+        "Testing overdue reminder creation with contact: {}",
+        contact.name
+    );
 
     let mut reminder_guard = ReminderGuard::new(&client);
 

@@ -1,9 +1,9 @@
 use async_trait::async_trait;
-use std::sync::{Arc, Mutex};
-use std::collections::HashMap;
-use dex_mcp_server::repositories::ContactRepository;
+use dex_mcp_server::error::{DexApiError, DexApiResult};
 use dex_mcp_server::models::Contact;
-use dex_mcp_server::error::{DexApiResult, DexApiError};
+use dex_mcp_server::repositories::ContactRepository;
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
 
 /// Mock contact repository for testing.
 ///
@@ -181,10 +181,7 @@ impl ContactRepository for MockContactRepository {
 
         // Check if contact exists
         if !contacts.contains_key(id) {
-            return Err(DexApiError::NotFound(format!(
-                "Contact {} not found",
-                id
-            )));
+            return Err(DexApiError::NotFound(format!("Contact {} not found", id)));
         }
 
         contacts.insert(id.to_string(), contact.clone());
@@ -198,10 +195,7 @@ impl ContactRepository for MockContactRepository {
 
         // Check if contact exists
         if !contacts.contains_key(id) {
-            return Err(DexApiError::NotFound(format!(
-                "Contact {} not found",
-                id
-            )));
+            return Err(DexApiError::NotFound(format!("Contact {} not found", id)));
         }
 
         contacts.remove(id);

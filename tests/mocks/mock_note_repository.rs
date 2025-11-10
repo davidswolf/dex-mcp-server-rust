@@ -1,9 +1,9 @@
 use async_trait::async_trait;
-use std::sync::{Arc, Mutex};
-use std::collections::HashMap;
-use dex_mcp_server::repositories::NoteRepository;
+use dex_mcp_server::error::{DexApiError, DexApiResult};
 use dex_mcp_server::models::Note;
-use dex_mcp_server::error::{DexApiResult, DexApiError};
+use dex_mcp_server::repositories::NoteRepository;
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
 
 /// Mock note repository for testing.
 #[allow(dead_code)]

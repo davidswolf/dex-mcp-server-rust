@@ -31,7 +31,8 @@ fn create_test_repos() -> (
     let sync_client = DexClient::new(&config);
     let client = Arc::new(AsyncDexClientImpl::new(sync_client)) as Arc<dyn AsyncDexClient>;
 
-    let contact_repo = Arc::new(DexContactRepository::new(client.clone())) as Arc<dyn ContactRepository>;
+    let contact_repo =
+        Arc::new(DexContactRepository::new(client.clone())) as Arc<dyn ContactRepository>;
     let note_repo = Arc::new(DexNoteRepository::new(client.clone())) as Arc<dyn NoteRepository>;
     let reminder_repo = Arc::new(DexReminderRepository::new(client)) as Arc<dyn ReminderRepository>;
 

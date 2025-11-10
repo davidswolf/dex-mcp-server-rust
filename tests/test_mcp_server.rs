@@ -28,12 +28,15 @@ mod e2e;
 use e2e::*;
 
 /// Helper to create repositories from a DexClient
-fn _setup_repositories(client: Arc<dyn AsyncDexClient>) -> (
+fn _setup_repositories(
+    client: Arc<dyn AsyncDexClient>,
+) -> (
     Arc<dyn ContactRepository>,
     Arc<dyn NoteRepository>,
     Arc<dyn ReminderRepository>,
 ) {
-    let contact_repo = Arc::new(DexContactRepository::new(client.clone())) as Arc<dyn ContactRepository>;
+    let contact_repo =
+        Arc::new(DexContactRepository::new(client.clone())) as Arc<dyn ContactRepository>;
     let note_repo = Arc::new(DexNoteRepository::new(client.clone())) as Arc<dyn NoteRepository>;
     let reminder_repo = Arc::new(DexReminderRepository::new(client)) as Arc<dyn ReminderRepository>;
     (contact_repo, note_repo, reminder_repo)
