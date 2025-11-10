@@ -118,9 +118,8 @@ impl ReminderService for ReminderServiceImpl {
         status: Option<ReminderStatus>,
     ) -> DexApiResult<Vec<Reminder>> {
         // Validate contact ID
-        Self::validate_contact_id(contact_id).map_err(|e| {
-            crate::error::DexApiError::InvalidRequest(e)
-        })?;
+        Self::validate_contact_id(contact_id)
+            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
 
         let filter = HistoryFilterParams {
             start_date: date_from,
@@ -162,19 +161,16 @@ impl ReminderService for ReminderServiceImpl {
         priority: Option<String>,
     ) -> DexApiResult<Reminder> {
         // Validate contact ID
-        Self::validate_contact_id(&contact_id).map_err(|e| {
-            crate::error::DexApiError::InvalidRequest(e)
-        })?;
+        Self::validate_contact_id(&contact_id)
+            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
 
         // Validate reminder text
-        Self::validate_reminder_text(&text).map_err(|e| {
-            crate::error::DexApiError::InvalidRequest(e)
-        })?;
+        Self::validate_reminder_text(&text)
+            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
 
         // Validate due date format
-        Self::validate_date_format(&due_date).map_err(|e| {
-            crate::error::DexApiError::InvalidRequest(e)
-        })?;
+        Self::validate_date_format(&due_date)
+            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
 
         let reminder_params = CreateReminderParams {
             contact_id,
@@ -208,8 +204,7 @@ mod tests {
 
         let contact_repo =
             Arc::new(DexContactRepository::new(client.clone())) as Arc<dyn ContactRepository>;
-        let note_repo =
-            Arc::new(DexNoteRepository::new(client.clone())) as Arc<dyn NoteRepository>;
+        let note_repo = Arc::new(DexNoteRepository::new(client.clone())) as Arc<dyn NoteRepository>;
         let reminder_repo =
             Arc::new(DexReminderRepository::new(client.clone())) as Arc<dyn ReminderRepository>;
 
@@ -230,12 +225,21 @@ mod tests {
 
     #[test]
     fn test_reminder_status_from_str() {
-        assert_eq!("active".parse::<ReminderStatus>().unwrap(), ReminderStatus::Active);
+        assert_eq!(
+            "active".parse::<ReminderStatus>().unwrap(),
+            ReminderStatus::Active
+        );
         assert_eq!(
             "completed".parse::<ReminderStatus>().unwrap(),
             ReminderStatus::Completed
         );
-        assert_eq!("all".parse::<ReminderStatus>().unwrap(), ReminderStatus::All);
-        assert_eq!("unknown".parse::<ReminderStatus>().unwrap(), ReminderStatus::All);
+        assert_eq!(
+            "all".parse::<ReminderStatus>().unwrap(),
+            ReminderStatus::All
+        );
+        assert_eq!(
+            "unknown".parse::<ReminderStatus>().unwrap(),
+            ReminderStatus::All
+        );
     }
 }

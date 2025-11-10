@@ -50,7 +50,8 @@ impl Metrics {
     /// Record an HTTP request with duration.
     pub fn record_http_request(&self, duration: Duration) {
         self.http_requests_total.fetch_add(1, Ordering::Relaxed);
-        self.http_duration_total_ms.fetch_add(duration.as_millis() as u64, Ordering::Relaxed);
+        self.http_duration_total_ms
+            .fetch_add(duration.as_millis() as u64, Ordering::Relaxed);
     }
 
     /// Record an HTTP error.
@@ -60,17 +61,20 @@ impl Metrics {
 
     /// Record contacts fetched.
     pub fn record_contacts_fetched(&self, count: usize) {
-        self.contacts_fetched_total.fetch_add(count as u64, Ordering::Relaxed);
+        self.contacts_fetched_total
+            .fetch_add(count as u64, Ordering::Relaxed);
     }
 
     /// Record notes fetched.
     pub fn record_notes_fetched(&self, count: usize) {
-        self.notes_fetched_total.fetch_add(count as u64, Ordering::Relaxed);
+        self.notes_fetched_total
+            .fetch_add(count as u64, Ordering::Relaxed);
     }
 
     /// Record reminders fetched.
     pub fn record_reminders_fetched(&self, count: usize) {
-        self.reminders_fetched_total.fetch_add(count as u64, Ordering::Relaxed);
+        self.reminders_fetched_total
+            .fetch_add(count as u64, Ordering::Relaxed);
     }
 
     /// Get total HTTP requests.

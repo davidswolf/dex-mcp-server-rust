@@ -1,9 +1,9 @@
+use crate::client::AsyncDexClient;
+use crate::error::DexApiResult;
+use crate::models::Note;
+use crate::repositories::traits::NoteRepository;
 use async_trait::async_trait;
 use std::sync::Arc;
-use crate::client::AsyncDexClient;
-use crate::repositories::traits::NoteRepository;
-use crate::models::Note;
-use crate::error::DexApiResult;
 
 /// Note repository implementation using Dex API client.
 ///
@@ -29,7 +29,9 @@ impl NoteRepository for DexNoteRepository {
         limit: usize,
         offset: usize,
     ) -> DexApiResult<Vec<Note>> {
-        self.client.get_contact_notes(contact_id, limit, offset).await
+        self.client
+            .get_contact_notes(contact_id, limit, offset)
+            .await
     }
 
     async fn create(&self, note: &Note) -> DexApiResult<Note> {

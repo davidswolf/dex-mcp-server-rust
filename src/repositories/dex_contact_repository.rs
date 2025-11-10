@@ -1,9 +1,9 @@
+use crate::client::AsyncDexClient;
+use crate::error::DexApiResult;
+use crate::models::Contact;
+use crate::repositories::traits::ContactRepository;
 use async_trait::async_trait;
 use std::sync::Arc;
-use crate::client::AsyncDexClient;
-use crate::repositories::traits::ContactRepository;
-use crate::models::Contact;
-use crate::error::DexApiResult;
 
 /// Contact repository implementation using Dex API client.
 ///
@@ -69,10 +69,14 @@ impl ContactRepository for DexContactRepository {
             .into_iter()
             .filter(|contact| {
                 // Search in first name, last name, and full name
-                let first_match = contact.first_name.as_ref()
+                let first_match = contact
+                    .first_name
+                    .as_ref()
                     .map(|n| n.to_lowercase().contains(&query_lower))
                     .unwrap_or(false);
-                let last_match = contact.last_name.as_ref()
+                let last_match = contact
+                    .last_name
+                    .as_ref()
                     .map(|n| n.to_lowercase().contains(&query_lower))
                     .unwrap_or(false);
 

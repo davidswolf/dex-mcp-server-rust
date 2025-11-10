@@ -13,10 +13,7 @@ use std::sync::Arc;
 use std::time::Instant;
 
 fn setup_mock_client(server: &Server) -> DexClient {
-    DexClient::with_base_url(
-        server.url(),
-        "test_api_key".to_string(),
-    )
+    DexClient::with_base_url(server.url(), "test_api_key".to_string())
 }
 
 fn create_test_contact() -> Contact {
@@ -48,17 +45,15 @@ fn create_test_notes(contact_id: &str) -> Vec<Note> {
 }
 
 fn create_test_reminders(contact_id: &str) -> Vec<Reminder> {
-    vec![
-        Reminder {
-            id: "reminder1".to_string(),
-            contact_id: contact_id.to_string(),
-            text: "Send proposal".to_string(),
-            due_date: "2024-02-05".to_string(),
-            created_at: "2024-01-15T10:00:00Z".to_string(),
-            completed: false,
-            ..Default::default()
-        },
-    ]
+    vec![Reminder {
+        id: "reminder1".to_string(),
+        contact_id: contact_id.to_string(),
+        text: "Send proposal".to_string(),
+        due_date: "2024-02-05".to_string(),
+        created_at: "2024-01-15T10:00:00Z".to_string(),
+        completed: false,
+        ..Default::default()
+    }]
 }
 
 #[tokio::test]
@@ -68,14 +63,22 @@ async fn test_get_timeline() {
     let notes = create_test_notes(&contact.id);
     let reminders = create_test_reminders(&contact.id);
 
-    let notes_mock = server.mock("GET", format!("/api/contacts/{}/timeline_events", contact.id).as_str())
+    let notes_mock = server
+        .mock(
+            "GET",
+            format!("/api/contacts/{}/timeline_events", contact.id).as_str(),
+        )
         .with_status(200)
         .with_header("content-type", "application/json")
         .with_body(json!(notes).to_string())
         .create_async()
         .await;
 
-    let reminders_mock = server.mock("GET", format!("/api/contacts/{}/reminders", contact.id).as_str())
+    let reminders_mock = server
+        .mock(
+            "GET",
+            format!("/api/contacts/{}/reminders", contact.id).as_str(),
+        )
         .with_status(200)
         .with_header("content-type", "application/json")
         .with_body(json!(reminders).to_string())
@@ -104,9 +107,11 @@ fn test_relationship_history_tools_creation() {
     let sync_client = setup_mock_client(&server);
     let client = Arc::new(AsyncDexClientImpl::new(sync_client)) as Arc<dyn AsyncDexClient>;
 
-    let contact_repo = Arc::new(DexContactRepository::new(client.clone())) as Arc<dyn ContactRepository>;
+    let contact_repo =
+        Arc::new(DexContactRepository::new(client.clone())) as Arc<dyn ContactRepository>;
     let note_repo = Arc::new(DexNoteRepository::new(client.clone())) as Arc<dyn NoteRepository>;
-    let reminder_repo = Arc::new(DexReminderRepository::new(client.clone())) as Arc<dyn ReminderRepository>;
+    let reminder_repo =
+        Arc::new(DexReminderRepository::new(client.clone())) as Arc<dyn ReminderRepository>;
 
     let _tools = RelationshipHistoryTools::new(contact_repo, note_repo, reminder_repo);
 

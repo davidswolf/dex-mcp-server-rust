@@ -60,9 +60,8 @@ impl HistoryService for HistoryServiceImpl {
         include_reminders: bool,
     ) -> DexApiResult<ContactHistoryResponse> {
         // Validate contact ID
-        Self::validate_contact_id(contact_id).map_err(|e| {
-            crate::error::DexApiError::InvalidRequest(e)
-        })?;
+        Self::validate_contact_id(contact_id)
+            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
 
         let filter = HistoryFilterParams {
             start_date: date_from,
@@ -108,8 +107,7 @@ mod tests {
 
         let contact_repo =
             Arc::new(DexContactRepository::new(client.clone())) as Arc<dyn ContactRepository>;
-        let note_repo =
-            Arc::new(DexNoteRepository::new(client.clone())) as Arc<dyn NoteRepository>;
+        let note_repo = Arc::new(DexNoteRepository::new(client.clone())) as Arc<dyn NoteRepository>;
         let reminder_repo =
             Arc::new(DexReminderRepository::new(client.clone())) as Arc<dyn ReminderRepository>;
 

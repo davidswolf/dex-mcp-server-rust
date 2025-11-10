@@ -22,7 +22,11 @@ fn test_list_contacts_basic() {
     let client = setup_test_client();
 
     let result = client.get_contacts(100, 0);
-    assert!(result.is_ok(), "Failed to fetch contacts: {:?}", result.err());
+    assert!(
+        result.is_ok(),
+        "Failed to fetch contacts: {:?}",
+        result.err()
+    );
 
     let contacts = result.unwrap();
     println!("Fetched {} contacts", contacts.len());
@@ -31,7 +35,10 @@ fn test_list_contacts_basic() {
     if !contacts.is_empty() {
         // Validate first contact structure
         assert_contact_valid(&contacts[0]);
-        println!("First contact: {} (ID: {})", contacts[0].name, contacts[0].id);
+        println!(
+            "First contact: {} (ID: {})",
+            contacts[0].name, contacts[0].id
+        );
     } else {
         println!("Warning: No contacts found in test account");
     }
@@ -137,7 +144,10 @@ fn test_search_contacts_by_email() {
     let result = client.search_contacts_by_email("nonexistent@example.com");
     match result {
         Ok(found) => {
-            assert!(found.is_empty(), "Expected no results for non-existent email");
+            assert!(
+                found.is_empty(),
+                "Expected no results for non-existent email"
+            );
             println!("✓ Non-existent email returns empty results");
         }
         Err(dex_mcp_server::DexApiError::NotFound(_)) => {
@@ -184,7 +194,9 @@ fn test_get_single_contact() {
         }
         Err(dex_mcp_server::DexApiError::NotFound(_)) => {
             println!("⚠ Endpoint not implemented: GET /contacts/{{id}}");
-            println!("  This is expected if the Dex API doesn't support fetching individual contacts");
+            println!(
+                "  This is expected if the Dex API doesn't support fetching individual contacts"
+            );
         }
         Err(dex_mcp_server::DexApiError::JsonError(_)) => {
             println!("⚠ GET /contacts/{{id}} returned unexpected JSON format");

@@ -98,7 +98,10 @@ impl ContactDiscoveryTools {
     ///
     /// # Returns
     /// A list of matching contacts with confidence scores
-    pub async fn find_contact(&mut self, params: FindContactParams) -> DexApiResult<FindContactResponse> {
+    pub async fn find_contact(
+        &mut self,
+        params: FindContactParams,
+    ) -> DexApiResult<FindContactResponse> {
         // Get all contacts (with caching)
         let contacts = self.get_cached_contacts().await?;
 
@@ -107,7 +110,8 @@ impl ContactDiscoveryTools {
         if !from_cache && params.email.is_some() {
             let results = self
                 .contact_repo
-                .search_by_email(params.email.as_ref().unwrap(), 10, 0).await?;
+                .search_by_email(params.email.as_ref().unwrap(), 10, 0)
+                .await?;
             if !results.is_empty() {
                 // Found by email, return as high-confidence matches
                 return Ok(FindContactResponse {
@@ -212,8 +216,8 @@ impl ContactDiscoveryTools {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::Config;
     use crate::client::{AsyncDexClient, AsyncDexClientImpl, DexClient};
+    use crate::config::Config;
     use crate::repositories::DexContactRepository;
 
     #[allow(dead_code)]

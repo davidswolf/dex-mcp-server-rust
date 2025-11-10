@@ -1,8 +1,8 @@
 mod mocks;
 
-use mocks::MockContactRepository;
-use dex_mcp_server::repositories::ContactRepository;
 use dex_mcp_server::models::Contact;
+use dex_mcp_server::repositories::ContactRepository;
+use mocks::MockContactRepository;
 
 fn sample_contact(id: &str, email: &str, first_name: &str, last_name: &str) -> Contact {
     Contact {

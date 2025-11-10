@@ -148,7 +148,10 @@ pub struct Contact {
     pub telegram: Option<String>,
 
     /// Birthday (API field: birthday_current_year)
-    #[serde(skip_serializing_if = "Option::is_none", rename = "birthday_current_year")]
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        rename = "birthday_current_year"
+    )]
     pub birthday: Option<String>,
 
     /// Location/address
@@ -295,7 +298,6 @@ impl SocialProfile {
     }
 }
 
-
 /// Inner contact payload for contact creation matching Dex API structure
 #[derive(Debug, Clone, Serialize)]
 struct ContactPayload {
@@ -344,9 +346,13 @@ impl From<&Contact> for CreateContactRequest {
     fn from(contact: &Contact) -> Self {
         let contact_emails = if !contact.emails.is_empty() {
             Some(ContactEmailsData {
-                data: contact.emails.iter().map(|email| EmailEntry {
-                    email: email.clone(),
-                }).collect(),
+                data: contact
+                    .emails
+                    .iter()
+                    .map(|email| EmailEntry {
+                        email: email.clone(),
+                    })
+                    .collect(),
             })
         } else {
             None
@@ -354,10 +360,14 @@ impl From<&Contact> for CreateContactRequest {
 
         let contact_phone_numbers = if !contact.phones.is_empty() {
             Some(ContactPhonesData {
-                data: contact.phones.iter().map(|phone| PhoneEntryWithLabel {
-                    phone_number: phone.clone(),
-                    label: Some("mobile".to_string()),
-                }).collect(),
+                data: contact
+                    .phones
+                    .iter()
+                    .map(|phone| PhoneEntryWithLabel {
+                        phone_number: phone.clone(),
+                        label: Some("mobile".to_string()),
+                    })
+                    .collect(),
             })
         } else {
             None
@@ -428,20 +438,32 @@ fn is_false(b: &bool) -> bool {
 impl UpdateContactRequest {
     pub fn from_contact(contact: &Contact, contact_id: &str) -> Self {
         let contact_emails = if !contact.emails.is_empty() {
-            Some(contact.emails.iter().map(|email| ContactEmailUpdate {
-                contact_id: contact_id.to_string(),
-                email: email.clone(),
-            }).collect())
+            Some(
+                contact
+                    .emails
+                    .iter()
+                    .map(|email| ContactEmailUpdate {
+                        contact_id: contact_id.to_string(),
+                        email: email.clone(),
+                    })
+                    .collect(),
+            )
         } else {
             None
         };
 
         let contact_phone_numbers = if !contact.phones.is_empty() {
-            Some(contact.phones.iter().map(|phone| ContactPhoneUpdate {
-                contact_id: contact_id.to_string(),
-                phone_number: phone.clone(),
-                label: Some("mobile".to_string()),
-            }).collect())
+            Some(
+                contact
+                    .phones
+                    .iter()
+                    .map(|phone| ContactPhoneUpdate {
+                        contact_id: contact_id.to_string(),
+                        phone_number: phone.clone(),
+                        label: Some("mobile".to_string()),
+                    })
+                    .collect(),
+            )
         } else {
             None
         };

@@ -38,16 +38,17 @@ pub fn sample_contact_with_email(name: &str, email: &str) -> Contact {
 /// The note ID will be empty and should be set after creation.
 pub fn sample_note(contact_id: &str, content: &str) -> Note {
     let now = Utc::now().to_rfc3339();
-    Note::new("".to_string(), contact_id.to_string(), content.to_string(), now)
+    Note::new(
+        "".to_string(),
+        contact_id.to_string(),
+        content.to_string(),
+        now,
+    )
 }
 
 /// Create a sample note with a specific timestamp.
 #[allow(dead_code)]
-pub fn sample_note_with_timestamp(
-    contact_id: &str,
-    content: &str,
-    created_at: &str,
-) -> Note {
+pub fn sample_note_with_timestamp(contact_id: &str, content: &str, created_at: &str) -> Note {
     Note::new(
         "".to_string(),
         contact_id.to_string(),
@@ -76,11 +77,7 @@ pub fn sample_reminder(contact_id: &str, text: &str) -> Reminder {
 
 /// Create a sample reminder with a specific due date.
 #[allow(dead_code)]
-pub fn sample_reminder_with_due_date(
-    contact_id: &str,
-    text: &str,
-    due_date: &str,
-) -> Reminder {
+pub fn sample_reminder_with_due_date(contact_id: &str, text: &str, due_date: &str) -> Reminder {
     let now = Utc::now().to_rfc3339();
 
     Reminder::new(
@@ -115,10 +112,10 @@ pub fn generate_test_reminder_text(prefix: &str) -> String {
 #[allow(dead_code)]
 pub fn name_variations() -> Vec<(&'static str, &'static str)> {
     vec![
-        ("John Doe", "john doe"),        // Case insensitive
-        ("Jane Smith", "jane"),          // Partial match
+        ("John Doe", "john doe"),          // Case insensitive
+        ("Jane Smith", "jane"),            // Partial match
         ("Robert Johnson", "Bob Johnson"), // Name variation
-        ("Michael Brown", "Mike Brown"), // Nickname
+        ("Michael Brown", "Mike Brown"),   // Nickname
     ]
 }
 

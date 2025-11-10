@@ -305,10 +305,11 @@ fn test_create_note() {
 fn test_get_contact_reminders() {
     let mut server = Server::new();
 
+    // The new implementation uses pagination with PAGE_SIZE=100
     let mock = server
         .mock("GET", "/reminders")
         .match_query(Matcher::AllOf(vec![
-            Matcher::UrlEncoded("limit".into(), "1000".into()),
+            Matcher::UrlEncoded("limit".into(), "100".into()),
             Matcher::UrlEncoded("offset".into(), "0".into()),
         ]))
         .with_status(200)

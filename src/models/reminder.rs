@@ -337,8 +337,10 @@ mod tests {
         println!("Serialized reminder for CREATE:\n{}", json);
 
         // This will FAIL because contact_id has skip_serializing
-        assert!(!json.contains("contact"),
-            "BUG: contact_id is not serialized, so API will reject this!");
+        assert!(
+            !json.contains("contact"),
+            "BUG: contact_id is not serialized, so API will reject this!"
+        );
     }
 
     #[test]
@@ -357,27 +359,49 @@ mod tests {
         println!("CreateReminderRequest JSON:\n{}", json);
 
         // Verify reminder wrapper is present
-        assert!(json.contains("reminder"), "reminder wrapper should be present");
-        assert!(json.contains("abb29721-d8c1-4a9f-a684-05c3ec7595ee"),
-            "contact_id value should be in the request");
+        assert!(
+            json.contains("reminder"),
+            "reminder wrapper should be present"
+        );
+        assert!(
+            json.contains("abb29721-d8c1-4a9f-a684-05c3ec7595ee"),
+            "contact_id value should be in the request"
+        );
 
         // Deserialize to check the structure
         let value: serde_json::Value = serde_json::from_str(&json).unwrap();
-        assert!(value["reminder"].is_object(), "reminder should be an object");
+        assert!(
+            value["reminder"].is_object(),
+            "reminder should be an object"
+        );
 
         let reminder_obj = &value["reminder"];
-        assert_eq!(reminder_obj["text"].as_str().unwrap(), "Reach out to Sayee again");
+        assert_eq!(
+            reminder_obj["text"].as_str().unwrap(),
+            "Reach out to Sayee again"
+        );
         // title is None (API doesn't support title field during creation), so it won't be in JSON
-        assert!(reminder_obj.get("title").is_none(), "title should not be present when None");
+        assert!(
+            reminder_obj.get("title").is_none(),
+            "title should not be present when None"
+        );
         assert_eq!(reminder_obj["due_at_date"].as_str().unwrap(), "2025-10-22");
 
         // Check reminders_contacts structure
         let contacts = &reminder_obj["reminders_contacts"]["data"];
-        assert!(contacts.is_array(), "reminders_contacts.data should be an array");
-        assert_eq!(contacts.as_array().unwrap().len(), 1,
-            "contacts array should have exactly 1 element");
-        assert_eq!(contacts[0]["contact_id"].as_str().unwrap(),
+        assert!(
+            contacts.is_array(),
+            "reminders_contacts.data should be an array"
+        );
+        assert_eq!(
+            contacts.as_array().unwrap().len(),
+            1,
+            "contacts array should have exactly 1 element"
+        );
+        assert_eq!(
+            contacts[0]["contact_id"].as_str().unwrap(),
             "abb29721-d8c1-4a9f-a684-05c3ec7595ee",
-            "contact_id should match");
+            "contact_id should match"
+        );
     }
 }

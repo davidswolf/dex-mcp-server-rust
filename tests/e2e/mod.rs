@@ -48,18 +48,33 @@ pub fn assert_contact_valid(contact: &Contact) {
 #[allow(dead_code)]
 pub fn assert_note_valid(note: &Note) {
     assert!(!note.id.is_empty(), "Note ID should not be empty");
-    assert!(!note.contact_id.is_empty(), "Note contact_id should not be empty");
+    assert!(
+        !note.contact_id.is_empty(),
+        "Note contact_id should not be empty"
+    );
     assert!(!note.content.is_empty(), "Note content should not be empty");
-    assert!(!note.created_at.is_empty(), "Note created_at should not be empty");
+    assert!(
+        !note.created_at.is_empty(),
+        "Note created_at should not be empty"
+    );
 }
 
 /// Assert that a reminder has valid required fields.
 #[allow(dead_code)]
 pub fn assert_reminder_valid(reminder: &Reminder) {
     assert!(!reminder.id.is_empty(), "Reminder ID should not be empty");
-    assert!(!reminder.contact_id.is_empty(), "Reminder contact_id should not be empty");
-    assert!(!reminder.text.is_empty(), "Reminder text should not be empty");
-    assert!(!reminder.due_date.is_empty(), "Reminder due_date should not be empty");
+    assert!(
+        !reminder.contact_id.is_empty(),
+        "Reminder contact_id should not be empty"
+    );
+    assert!(
+        !reminder.text.is_empty(),
+        "Reminder text should not be empty"
+    );
+    assert!(
+        !reminder.due_date.is_empty(),
+        "Reminder due_date should not be empty"
+    );
     // Note: created_at is not provided by the Dex API for reminders
 }
 
@@ -115,10 +130,7 @@ pub async fn rate_limit_delay() {
 ///
 /// This is useful for handling transient network errors or rate limits.
 #[allow(dead_code)]
-pub async fn retry_with_backoff<F, Fut, T, E>(
-    mut f: F,
-    max_retries: u32,
-) -> Result<T, E>
+pub async fn retry_with_backoff<F, Fut, T, E>(mut f: F, max_retries: u32) -> Result<T, E>
 where
     F: FnMut() -> Fut,
     Fut: std::future::Future<Output = Result<T, E>>,

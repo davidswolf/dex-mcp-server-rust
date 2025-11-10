@@ -32,7 +32,10 @@ fn test_get_contact_timeline() {
     }
 
     let contact = &contacts[0];
-    println!("Fetching timeline for: {} (ID: {})", contact.name, contact.id);
+    println!(
+        "Fetching timeline for: {} (ID: {})",
+        contact.name, contact.id
+    );
 
     // Fetch notes and reminders
     let notes_result = client.get_contact_notes(&contact.id, 100, 0);
@@ -41,8 +44,12 @@ fn test_get_contact_timeline() {
     match (notes_result, reminders_result) {
         (Ok(notes), Ok(reminders)) => {
             let total_items = notes.len() + reminders.len();
-            println!("✓ Timeline retrieved: {} notes + {} reminders = {} total items",
-                notes.len(), reminders.len(), total_items);
+            println!(
+                "✓ Timeline retrieved: {} notes + {} reminders = {} total items",
+                notes.len(),
+                reminders.len(),
+                total_items
+            );
 
             // Verify timeline items have timestamps
             for note in &notes {
@@ -51,7 +58,10 @@ fn test_get_contact_timeline() {
 
             for reminder in &reminders {
                 // Reminders use due_date as timestamp since API doesn't provide created_at
-                assert!(!reminder.due_date.is_empty(), "Reminder should have due_date");
+                assert!(
+                    !reminder.due_date.is_empty(),
+                    "Reminder should have due_date"
+                );
             }
 
             println!("✓ All timeline items have valid timestamps");
@@ -135,7 +145,8 @@ fn test_combined_history_view() {
         println!("\nMost recent items:");
 
         for (i, item) in timeline.iter().take(5).enumerate() {
-            println!("  {}. [{}] {} - {}",
+            println!(
+                "  {}. [{}] {} - {}",
                 i + 1,
                 item.item_type,
                 item.timestamp,
@@ -193,7 +204,10 @@ fn test_timeline_filtering_by_type() {
         // Verify all items are reminders
         for reminder in &reminders {
             assert!(!reminder.text.is_empty(), "Reminders should have text");
-            assert!(!reminder.due_date.is_empty(), "Reminders should have due date");
+            assert!(
+                !reminder.due_date.is_empty(),
+                "Reminders should have due date"
+            );
         }
     }
 }
@@ -234,25 +248,27 @@ fn test_filter_active_vs_completed_reminders() {
         println!("Total reminders: {}", all_reminders.len());
 
         // Filter active reminders (not completed)
-        let active: Vec<_> = all_reminders.iter()
-            .filter(|r| !r.completed)
-            .collect();
+        let active: Vec<_> = all_reminders.iter().filter(|r| !r.completed).collect();
 
         // Filter completed reminders
-        let completed: Vec<_> = all_reminders.iter()
-            .filter(|r| r.completed)
-            .collect();
+        let completed: Vec<_> = all_reminders.iter().filter(|r| r.completed).collect();
 
         println!("  Active: {}", active.len());
         println!("  Completed: {}", completed.len());
 
         // Verify filtering is correct
         for reminder in &active {
-            assert!(!reminder.completed, "Active filter should only return non-completed");
+            assert!(
+                !reminder.completed,
+                "Active filter should only return non-completed"
+            );
         }
 
         for reminder in &completed {
-            assert!(reminder.completed, "Completed filter should only return completed");
+            assert!(
+                reminder.completed,
+                "Completed filter should only return completed"
+            );
         }
 
         // Verify totals match
@@ -368,7 +384,8 @@ fn test_timeline_date_filtering() {
         // Filter notes from the last 30 days
         let cutoff_date = chrono::Utc::now() - chrono::Duration::days(30);
 
-        let recent_notes: Vec<_> = notes.iter()
+        let recent_notes: Vec<_> = notes
+            .iter()
             .filter(|note| {
                 if let Ok(note_date) = chrono::DateTime::parse_from_rfc3339(&note.created_at) {
                     note_date.timestamp() >= cutoff_date.timestamp()
@@ -381,7 +398,8 @@ fn test_timeline_date_filtering() {
         println!("  Notes from last 30 days: {}", recent_notes.len());
 
         // Filter notes older than 30 days
-        let older_notes: Vec<_> = notes.iter()
+        let older_notes: Vec<_> = notes
+            .iter()
             .filter(|note| {
                 if let Ok(note_date) = chrono::DateTime::parse_from_rfc3339(&note.created_at) {
                     note_date.timestamp() < cutoff_date.timestamp()
@@ -439,7 +457,8 @@ fn test_timeline_chronological_sorting() {
         if notes.len() >= 3 {
             println!("First 3 notes:");
             for (i, note) in notes.iter().take(3).enumerate() {
-                println!("  {}. {} - {}",
+                println!(
+                    "  {}. {} - {}",
                     i + 1,
                     note.created_at,
                     note.content.chars().take(40).collect::<String>()

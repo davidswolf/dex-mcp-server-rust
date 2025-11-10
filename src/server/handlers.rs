@@ -5,8 +5,7 @@
 use crate::client::AsyncDexClient;
 use crate::repositories::{ContactRepository, NoteRepository, ReminderRepository};
 use crate::tools::{
-    ContactDiscoveryTools, ContactEnrichmentTools, RelationshipHistoryTools,
-    SearchTools,
+    ContactDiscoveryTools, ContactEnrichmentTools, RelationshipHistoryTools, SearchTools,
 };
 use rmcp::handler::server::tool::ToolRouter;
 use rmcp::handler::server::wrapper::Parameters;
@@ -437,7 +436,8 @@ impl DexMcpServer {
 
         // Convert status string to ReminderStatus
         let status = params.status.as_ref().map(|s| {
-            s.parse::<crate::services::ReminderStatus>().unwrap_or(crate::services::ReminderStatus::All)
+            s.parse::<crate::services::ReminderStatus>()
+                .unwrap_or(crate::services::ReminderStatus::All)
         });
 
         let reminders = self
@@ -446,8 +446,7 @@ impl DexMcpServer {
             .await
             .map_err(to_mcp_error)?;
 
-        let json_response =
-            serde_json::to_string_pretty(&reminders).map_err(to_mcp_error)?;
+        let json_response = serde_json::to_string_pretty(&reminders).map_err(to_mcp_error)?;
 
         Ok(CallToolResult::success(vec![Content::text(json_response)]))
     }
@@ -495,12 +494,20 @@ impl DexMcpServer {
         let params = params.0;
 
         tracing::info!("MCP Handler: add_contact_note called");
-        tracing::debug!("Parameters: contact_id={}, content_len={}, tags={:?}",
-            params.contact_id, params.content.len(), params.tags);
+        tracing::debug!(
+            "Parameters: contact_id={}, content_len={}, tags={:?}",
+            params.contact_id,
+            params.content.len(),
+            params.tags
+        );
 
         let note = self
             .note_service
-            .create_note(params.contact_id.clone(), params.content.clone(), params.tags.clone())
+            .create_note(
+                params.contact_id.clone(),
+                params.content.clone(),
+                params.tags.clone(),
+            )
             .await
             .map_err(|e| {
                 tracing::error!("Failed to create note: {:?}", e);
@@ -522,8 +529,13 @@ impl DexMcpServer {
         let params = params.0;
 
         tracing::info!("MCP Handler: create_contact_reminder called");
-        tracing::debug!("Parameters: contact_id={}, note={}, reminder_date={}, reminder_type={:?}",
-            params.contact_id, params.note, params.reminder_date, params.reminder_type);
+        tracing::debug!(
+            "Parameters: contact_id={}, note={}, reminder_date={}, reminder_type={:?}",
+            params.contact_id,
+            params.note,
+            params.reminder_date,
+            params.reminder_type
+        );
 
         let reminder = self
             .reminder_service

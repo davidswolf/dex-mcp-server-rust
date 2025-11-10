@@ -213,7 +213,10 @@ impl ContactEnrichmentTools {
     ///
     /// # Returns
     /// The created reminder
-    pub async fn create_contact_reminder(&self, params: CreateReminderParams) -> DexApiResult<Reminder> {
+    pub async fn create_contact_reminder(
+        &self,
+        params: CreateReminderParams,
+    ) -> DexApiResult<Reminder> {
         // Build reminder object
         let reminder = Reminder {
             id: String::new(), // Will be assigned by the API
@@ -235,8 +238,8 @@ impl ContactEnrichmentTools {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::Config;
     use crate::client::{AsyncDexClient, AsyncDexClientImpl, DexClient};
+    use crate::config::Config;
     use crate::repositories::{DexContactRepository, DexNoteRepository, DexReminderRepository};
 
     #[test]

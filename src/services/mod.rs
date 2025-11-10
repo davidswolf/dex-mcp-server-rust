@@ -17,7 +17,7 @@ pub use reminder_service::{ReminderService, ReminderServiceImpl, ReminderStatus}
 // Re-export common types used by services
 pub use crate::models::{Contact, Note, Reminder};
 pub use crate::tools::{
-    ContactDiscoveryTools, ContactEnrichmentTools, EnrichContactParams, CreateNoteParams,
-    CreateReminderParams, FindContactParams, FindContactResponse, RelationshipHistoryTools,
-    SearchTools, HistoryFilterParams, ContactHistoryResponse,
+    ContactDiscoveryTools, ContactEnrichmentTools, ContactHistoryResponse, CreateNoteParams,
+    CreateReminderParams, EnrichContactParams, FindContactParams, FindContactResponse,
+    HistoryFilterParams, RelationshipHistoryTools, SearchTools,
 };
