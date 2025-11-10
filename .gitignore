@@ -1,0 +1,29 @@
+# Rust build artifacts
+/target
+Cargo.lock
+
+# Environment files (contain sensitive API keys)
+.env
+.env.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Serena MCP server files
+.serena/
+
+# Debug and temporary files
+nul
+*.log
+
+# Test artifacts
+*.profraw
+*.profdata

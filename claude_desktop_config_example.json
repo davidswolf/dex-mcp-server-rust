@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "dex-mcp-server": {
+      "command": "C:\\Users\\david\\code\\DexMCPServerRust\\target\\debug\\dex-mcp-server.exe",
+      "env": {
+        "DEX_API_KEY": "your-dex-api-key-here",
+        "DEX_API_URL": "https://api.getdex.com/graphql",
+        "DEX_SEARCH_CACHE_TTL_MINUTES": "30",
+        "RUST_LOG": "debug"
+      }
+    }
+  }
+}
