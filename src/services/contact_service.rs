@@ -126,7 +126,7 @@ impl ContactService for ContactServiceImpl {
     ) -> DexApiResult<SearchResponse> {
         // Validate query
         Self::validate_search_query(&query)
-            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
+            .map_err(crate::error::DexApiError::InvalidRequest)?;
 
         let search_params = SearchParams {
             query,
@@ -148,7 +148,7 @@ impl ContactService for ContactServiceImpl {
         // Validate email if provided
         if let Some(ref email_val) = email {
             Self::validate_email(email_val)
-                .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
+                .map_err(crate::error::DexApiError::InvalidRequest)?;
         }
 
         let find_params = FindContactParams {
@@ -168,7 +168,7 @@ impl ContactService for ContactServiceImpl {
     async fn get_contact_details(&self, contact_id: &str) -> DexApiResult<Contact> {
         // Validate contact ID
         Self::validate_contact_id(contact_id)
-            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
+            .map_err(crate::error::DexApiError::InvalidRequest)?;
 
         let discovery = self.discovery_tools.read().await;
         discovery.get_contact_details(contact_id).await
@@ -177,12 +177,12 @@ impl ContactService for ContactServiceImpl {
     async fn enrich_contact(&self, params: ContactEnrichParams) -> DexApiResult<Contact> {
         // Validate contact ID
         Self::validate_contact_id(&params.contact_id)
-            .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
+            .map_err(crate::error::DexApiError::InvalidRequest)?;
 
         // Validate email if provided
         if let Some(ref email_val) = params.email {
             Self::validate_email(email_val)
-                .map_err(|e| crate::error::DexApiError::InvalidRequest(e))?;
+                .map_err(crate::error::DexApiError::InvalidRequest)?;
         }
 
         // Convert social_profiles from strings to SocialProfile objects

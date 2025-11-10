@@ -188,7 +188,7 @@ jobs:
   # All checks passed
   ci-success:
     name: CI Success
-    needs: [fmt, clippy, test, doc, security_audit]
+    needs: [fmt, clippy, test, doc, security_audit, dependencies]
     runs-on: ubuntu-latest
     steps:
       - name: Mark CI as successful
