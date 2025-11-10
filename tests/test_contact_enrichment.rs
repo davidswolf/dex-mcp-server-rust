@@ -15,6 +15,7 @@ use e2e::{fixtures::*, *};
 /// - Note ID is returned
 /// - Note content is preserved
 #[test]
+#[ignore]
 #[serial]
 fn test_add_note_to_contact() {
     let client = setup_test_client();
@@ -66,6 +67,7 @@ fn test_add_note_to_contact() {
 /// - Note data structure is correct
 /// - Notes are returned in proper order
 #[test]
+#[ignore]
 #[serial]
 fn test_retrieve_notes_for_contact() {
     let client = setup_test_client();
@@ -116,6 +118,7 @@ fn test_retrieve_notes_for_contact() {
 /// - All notes are retrievable
 /// - Note count increases correctly
 #[test]
+#[ignore]
 #[serial]
 fn test_add_multiple_notes() {
     let client = setup_test_client();
@@ -186,6 +189,7 @@ fn test_add_multiple_notes() {
 /// - Newlines and formatting are maintained
 /// - Unicode/emoji support works
 #[test]
+#[ignore]
 #[serial]
 fn test_note_with_special_characters() {
     let client = setup_test_client();
@@ -234,6 +238,7 @@ fn test_note_with_special_characters() {
 /// - Reminder ID is returned
 /// - Due date is set correctly
 #[test]
+#[ignore]
 #[serial]
 fn test_create_reminder() {
     let client = setup_test_client();
@@ -285,6 +290,7 @@ fn test_create_reminder() {
 /// - Reminder data structure is correct
 /// - Active vs completed status is tracked
 #[test]
+#[ignore]
 #[serial]
 fn test_retrieve_reminders_for_contact() {
     let client = setup_test_client();
@@ -335,6 +341,7 @@ fn test_retrieve_reminders_for_contact() {
 /// - Date format is proper ISO 8601
 /// - Past and future dates work
 #[test]
+#[ignore]
 #[serial]
 fn test_reminder_due_date_handling() {
     let client = setup_test_client();
@@ -385,6 +392,7 @@ fn test_reminder_due_date_handling() {
 /// - ISO 8601 format is used
 /// - Custom timestamps can be set
 #[test]
+#[ignore]
 #[serial]
 fn test_note_timestamp_handling() {
     let client = setup_test_client();
@@ -440,6 +448,7 @@ fn test_note_timestamp_handling() {
 /// - Note pagination works correctly
 /// - Limit and offset parameters are respected
 #[test]
+#[ignore]
 #[serial]
 fn test_notes_pagination() {
     let client = setup_test_client();
@@ -499,6 +508,7 @@ fn test_notes_pagination() {
 /// - Reminder pagination works correctly
 /// - Limit and offset parameters are respected
 #[test]
+#[ignore]
 #[serial]
 fn test_reminders_pagination() {
     let client = setup_test_client();

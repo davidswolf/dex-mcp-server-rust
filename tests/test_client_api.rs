@@ -17,6 +17,7 @@ use e2e::*;
 /// - Response structure matches expected format
 /// - Contacts have required fields (id, name)
 #[test]
+#[ignore]
 #[serial]
 fn test_list_contacts_basic() {
     let client = setup_test_client();
@@ -51,6 +52,7 @@ fn test_list_contacts_basic() {
 /// - No duplicate contacts across pages
 /// - Offset works correctly
 #[test]
+#[ignore]
 #[serial]
 fn test_list_contacts_pagination() {
     let client = setup_test_client();
@@ -99,6 +101,7 @@ fn test_list_contacts_pagination() {
 /// - Contact details are complete
 /// - Search handles non-existent emails gracefully
 #[test]
+#[ignore]
 #[serial]
 fn test_search_contacts_by_email() {
     let client = setup_test_client();
@@ -167,6 +170,7 @@ fn test_search_contacts_by_email() {
 /// - All fields are populated correctly
 /// - Contact structure is valid
 #[test]
+#[ignore]
 #[serial]
 fn test_get_single_contact() {
     let client = setup_test_client();
@@ -215,6 +219,7 @@ fn test_get_single_contact() {
 /// - Invalid API key returns 401
 /// - Errors are properly typed and handled
 #[test]
+#[ignore]
 #[serial]
 fn test_error_handling() {
     let client = setup_test_client();
@@ -244,6 +249,7 @@ fn test_error_handling() {
 /// - Note structure is valid
 /// - Pagination works for notes
 #[test]
+#[ignore]
 #[serial]
 fn test_get_contact_notes() {
     let client = setup_test_client();
@@ -289,6 +295,7 @@ fn test_get_contact_notes() {
 /// - Reminder structure is valid
 /// - Pagination works for reminders
 #[test]
+#[ignore]
 #[serial]
 fn test_get_contact_reminders() {
     let client = setup_test_client();

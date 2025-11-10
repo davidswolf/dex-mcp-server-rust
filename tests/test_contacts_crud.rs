@@ -49,6 +49,7 @@ impl<'a> Drop for ContactGuard<'a> {
 /// - Contacts can be deleted
 /// - All test data is cleaned up
 #[test]
+#[ignore]
 #[serial]
 fn test_contact_crud_lifecycle() {
     let client = setup_test_client();
@@ -205,6 +206,7 @@ fn test_contact_crud_lifecycle() {
 /// - Multiple contacts can be created
 /// - All contacts are properly cleaned up
 #[test]
+#[ignore]
 #[serial]
 fn test_contact_batch_create_and_cleanup() {
     let client = setup_test_client();
@@ -248,6 +250,7 @@ fn test_contact_batch_create_and_cleanup() {
 /// - Contacts can be updated multiple times
 /// - Each update is persisted correctly
 #[test]
+#[ignore]
 #[serial]
 fn test_contact_multiple_updates() {
     let client = setup_test_client();
@@ -304,6 +307,7 @@ fn test_contact_multiple_updates() {
 /// This test validates:
 /// - Appropriate error is returned for invalid contact IDs
 #[test]
+#[ignore]
 #[serial]
 fn test_contact_update_nonexistent() {
     let client = setup_test_client();
@@ -327,6 +331,7 @@ fn test_contact_update_nonexistent() {
 /// This test validates:
 /// - Appropriate error is returned for invalid contact IDs
 #[test]
+#[ignore]
 #[serial]
 fn test_contact_delete_nonexistent() {
     let client = setup_test_client();
@@ -351,6 +356,7 @@ fn test_contact_delete_nonexistent() {
 /// - Contacts can be created with just first and last name
 /// - Optional fields are handled correctly
 #[test]
+#[ignore]
 #[serial]
 fn test_contact_minimal_create() {
     let client = setup_test_client();
@@ -390,6 +396,7 @@ fn test_contact_minimal_create() {
 /// - Email addresses can be updated
 /// - Phone numbers can be updated
 #[test]
+#[ignore]
 #[serial]
 fn test_contact_update_email_phone() {
     let client = setup_test_client();

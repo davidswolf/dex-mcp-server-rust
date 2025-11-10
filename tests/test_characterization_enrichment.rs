@@ -56,22 +56,27 @@ async fn test_enrich_contact_basic() {
     let notes_mock = server
         .mock(
             "GET",
-            format!("/api/contacts/{}/timeline_events", contact.id).as_str(),
+            format!("/timeline_items/contacts/{}", contact.id).as_str(),
         )
+        .match_query(mockito::Matcher::AllOf(vec![
+            mockito::Matcher::UrlEncoded("limit".into(), "100".into()),
+            mockito::Matcher::UrlEncoded("offset".into(), "0".into()),
+        ]))
         .with_status(200)
         .with_header("content-type", "application/json")
-        .with_body(json!(notes).to_string())
+        .with_body(json!({"timeline_items": notes}).to_string())
         .create_async()
         .await;
 
     let reminders_mock = server
-        .mock(
-            "GET",
-            format!("/api/contacts/{}/reminders", contact.id).as_str(),
-        )
+        .mock("GET", "/reminders")
+        .match_query(mockito::Matcher::AllOf(vec![
+            mockito::Matcher::UrlEncoded("limit".into(), "100".into()),
+            mockito::Matcher::UrlEncoded("offset".into(), "0".into()),
+        ]))
         .with_status(200)
         .with_header("content-type", "application/json")
-        .with_body(json!(reminders).to_string())
+        .with_body(json!({"reminders": reminders}).to_string())
         .create_async()
         .await;
 

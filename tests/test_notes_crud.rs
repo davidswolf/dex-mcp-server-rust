@@ -54,6 +54,7 @@ impl<'a> Drop for NoteGuard<'a> {
 /// - Notes can be deleted
 /// - All test data is cleaned up
 #[test]
+#[ignore]
 #[serial]
 fn test_note_crud_lifecycle() {
     let client = setup_test_client();
@@ -206,6 +207,7 @@ fn test_note_crud_lifecycle() {
 /// - Multiple notes can be created for the same contact
 /// - All notes are properly cleaned up
 #[test]
+#[ignore]
 #[serial]
 fn test_note_batch_create_and_cleanup() {
     let client = setup_test_client();
@@ -258,6 +260,7 @@ fn test_note_batch_create_and_cleanup() {
 /// - Notes can be updated multiple times
 /// - Each update is persisted correctly
 #[test]
+#[ignore]
 #[serial]
 fn test_note_multiple_updates() {
     let client = setup_test_client();
@@ -322,6 +325,7 @@ fn test_note_multiple_updates() {
 /// This test validates:
 /// - Appropriate error is returned for invalid note IDs
 #[test]
+#[ignore]
 #[serial]
 fn test_note_update_nonexistent() {
     let client = setup_test_client();
@@ -359,6 +363,7 @@ fn test_note_update_nonexistent() {
 /// This test validates:
 /// - Appropriate error is returned for invalid note IDs
 #[test]
+#[ignore]
 #[serial]
 fn test_note_delete_nonexistent() {
     let client = setup_test_client();

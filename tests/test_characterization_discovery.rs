@@ -51,7 +51,7 @@ async fn test_find_contact_by_email() {
     let contacts = create_test_contacts();
 
     let mock = server
-        .mock("GET", "/api/contacts")
+        .mock("GET", "/contacts/search")
         .match_query(mockito::Matcher::AllOf(vec![mockito::Matcher::UrlEncoded(
             "email".into(),
             "john.doe@example.com".into(),
@@ -84,14 +84,14 @@ async fn test_find_contact_by_name() {
     let contacts = create_test_contacts();
 
     let mock = server
-        .mock("GET", "/api/contacts")
+        .mock("GET", "/contacts")
         .match_query(mockito::Matcher::AllOf(vec![
             mockito::Matcher::UrlEncoded("limit".into(), "100".into()),
             mockito::Matcher::UrlEncoded("offset".into(), "0".into()),
         ]))
         .with_status(200)
         .with_header("content-type", "application/json")
-        .with_body(json!(contacts).to_string())
+        .with_body(json!({"contacts": contacts}).to_string())
         .create_async()
         .await;
 
