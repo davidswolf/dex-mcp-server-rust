@@ -3,10 +3,11 @@
 //! This module provides fuzzy full-text search across contacts, notes, and reminders,
 //! with snippet generation and match context extraction.
 
-use crate::models::{Contact, Note, Reminder};
+use crate::models::{Contact, ContactRef, Note, Reminder};
 use once_cell::sync::Lazy;
 use regex::Regex;
 use std::collections::HashMap;
+use std::sync::Arc;
 
 /// Maximum snippet length in characters
 const MAX_SNIPPET_LENGTH: usize = 150;
@@ -86,8 +87,8 @@ pub struct MatchContext {
 /// A search result for a contact with all matches.
 #[derive(Debug, Clone)]
 pub struct SearchResult {
-    /// The contact
-    pub contact: Contact,
+    /// The contact (shared reference to avoid cloning)
+    pub contact: ContactRef,
 
     /// All matches found for this contact
     pub matches: Vec<MatchContext>,
@@ -264,7 +265,7 @@ impl FullTextSearchIndex {
 
                 if overall_confidence >= min_confidence {
                     results.push(SearchResult {
-                        contact: contact.clone(),
+                        contact: Arc::new(contact.clone()),
                         matches,
                         confidence: overall_confidence,
                     });

@@ -7,6 +7,6 @@ pub mod contact;
 pub mod note;
 pub mod reminder;
 
-pub use contact::{Contact, SocialProfile};
+pub use contact::{Contact, ContactRef, SocialProfile};
 pub use note::{CreateNoteRequest, Note};
 pub use reminder::{CreateReminderRequest, Reminder};

@@ -19,10 +19,12 @@
 pub mod cache;
 pub mod client;
 pub mod config;
+pub mod domain;
 pub mod error;
 pub mod matching;
 pub mod metrics;
 pub mod models;
+pub mod observability;
 pub mod repositories;
 pub mod search;
 pub mod server;

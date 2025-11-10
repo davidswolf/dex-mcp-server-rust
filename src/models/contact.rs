@@ -1,6 +1,14 @@
 //! Contact model representing a person in Dex Personal CRM.
 
 use serde::{Deserialize, Deserializer, Serialize};
+use std::sync::Arc;
+
+/// Shared reference to a Contact for memory-efficient storage.
+///
+/// This type is used throughout the application to avoid unnecessary cloning
+/// of Contact data, particularly in caches and search results where the same
+/// contact may be referenced multiple times.
+pub type ContactRef = Arc<Contact>;
 
 /// Email address entry for a contact (from API).
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Default)]
