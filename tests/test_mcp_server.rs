@@ -116,15 +116,4 @@ async fn test_tool_find_contact_by_name() {
     }
 }
 
-// TODO: Add remaining tests following the same pattern
-// - test_tool_find_contact_by_email
-// - test_tool_add_contact_note
-// - test_tool_create_contact_reminder
-// - test_tool_get_contact_history
-// - test_tool_error_handling
-// - test_tools_with_config
-// - test_tool_caching
-// - test_tool_combined_search
-// - test_tool_history_date_filtering
-
 */
