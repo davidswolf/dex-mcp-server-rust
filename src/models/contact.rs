@@ -8,6 +8,9 @@ use std::sync::Arc;
 /// This type is used throughout the application to avoid unnecessary cloning
 /// of Contact data, particularly in caches and search results where the same
 /// contact may be referenced multiple times.
+///
+/// ⚠️ **IMPORTANT:** Do not create reference cycles by adding `Arc<Contact>` fields
+/// inside Contact. Use `Weak<Contact>` if bidirectional references are needed.
 pub type ContactRef = Arc<Contact>;
 
 /// Email address entry for a contact (from API).
