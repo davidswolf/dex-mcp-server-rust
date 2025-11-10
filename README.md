@@ -147,6 +147,42 @@ cargo clippy -- -D warnings
 cargo bench
 ```
 
+## CI/CD
+
+This project uses GitHub Actions for continuous integration and automated releases.
+
+### Workflows
+
+- **CI Pipeline**: Runs on every push and PR
+  - Code formatting checks (`cargo fmt`)
+  - Linting with Clippy
+  - Tests on Linux, macOS, and Windows
+  - Documentation checks
+  - Security audits
+  - Dependency checks
+
+- **Release Pipeline**: Automated semantic versioning
+  - Automatic version calculation from commit messages
+  - Multi-platform binary builds (Linux, macOS, Windows, ARM)
+  - GitHub releases with changelogs
+  - Optional publishing to crates.io
+
+### Commit Message Format
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/) for automatic semantic versioning:
+
+- `feat:` - New feature (minor version bump)
+- `fix:` - Bug fix (patch version bump)
+- `BREAKING CHANGE:` - Breaking change (major version bump)
+- `docs:`, `chore:`, `refactor:`, `test:`, `ci:` - No version bump
+
+Example:
+```bash
+git commit -m "feat: add contact export functionality"
+```
+
+For more details, see [.github/WORKFLOWS.md](.github/WORKFLOWS.md).
+
 ## Architecture
 
 The project follows clean architecture principles:
